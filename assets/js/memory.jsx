@@ -7,10 +7,22 @@ export default function game_init(root) {
   }
 
   class Card extends React.Component {
-      constructor(props) {
-          super(props)
-          this.state = {};
-      }
+    render() {
+        let value = <div className="coulum"> 
+        <p>{this.props.value}</p>
+        </div>
+
+        if (this.props.matched) {
+            return;
+        }
+        if (this.props.selected) {
+            return <button>{value}</button>;
+        }
+
+        if (!this.props.selected) {
+            return <button class="button button-outline">?</button>;
+        }
+    }
   }
 
   class Board extends React.Component {
@@ -21,15 +33,14 @@ export default function game_init(root) {
     }
 
     render() {
-
         let score = <div className="column">
         <p>Score: {this.state.score}</p>
-        <p>Game Over: {this.state.gameOver}</p>
+        <p>Game Over: {this.state.gameOver.toString()}</p>
       </div>;
-
+        
         return <div className="row">
+        <Card value="A" matched={false} selected={false}/>
         {score}
-      </div>
-        ;
+        </div>;
     }
   }
