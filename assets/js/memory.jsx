@@ -6,41 +6,54 @@ export default function game_init(root) {
     ReactDOM.render(<Board />, root);
   }
 
-  class Card extends React.Component {
-    render() {
-        let value = <div className="coulum"> 
-        <p>{this.props.value}</p>
-        </div>
-
-        if (this.props.matched) {
-            return;
-        }
-        if (this.props.selected) {
-            return <button>{value}</button>;
-        }
-
-        if (!this.props.selected) {
-            return <button class="button button-outline">?</button>;
-        }
-    }
-  }
-
   class Board extends React.Component {
     constructor(props) {
         super(props)
+        let values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         this.state = { score: 0, 
-                       gameOver: false };
+                       gameOver: false, 
+                       pairs: _.shuffle(_.concat(values, values)),
+                    }
+    };
+    render() {
+       return <GenerateBoard pairs={this.state.pairs} />
+    }
+}
+
+  function GenerateBoard(props) {
+      const column = [];
+    for(let i = 0; i < 4; i++) {
+        const row = [];
+        for (let j = 0; j < 4; j++) {
+
+            row.push(
+            <Card value={props.pairs[j]} selected= {true} matched= {false} />);
+        }
+        column.push(
+            <div className= "row">
+            {row}
+            </div>
+        );
+    }
+    return <div className="column">{column}</div>
+  }
+
+  function Card(props) {
+    let value = <div className="coulum"> 
+    <p>{props.value}</p>
+    </div>
+
+    if (props.matched) {
+        return <button>{value}</button>;
+    }
+    if (props.selected) {
+        return <button>{value}</button>;
     }
 
-    render() {
-        let score = <div className="column">
-        <p>Score: {this.state.score}</p>
-        <p>Game Over: {this.state.gameOver.toString()}</p>
-      </div>;
-        
-        return <div className="row">
-        <Card value="A" matched={false} selected={false}/>
-        {score}
-        </div>;
+    if (!props.selected) {
+        return <button class="button button-outline">?</button>;
     }
+    return;
+
+
   }
