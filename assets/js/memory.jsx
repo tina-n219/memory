@@ -15,31 +15,37 @@ export default function game_init(root) {
                        pairs: _.shuffle(_.concat(values, values)),
                     }
     };
+
     render() {
-       return <GenerateBoard pairs={this.state.pairs} />
+        let score = <div className="column">Score: {this.state.score}</div>
+        return 
+        <div className="column-pairs">
+        <GenerateBoard pairs={this.state.pairs}/>
+        {score}
+        </div>
     }
 }
 
   function GenerateBoard(props) {
       const column = [];
-    for(let i = 0; i < 4; i++) {
-        const row = [];
-        for (let j = 0; j < 4; j++) {
-
-            row.push(
-            <Card value={props.pairs[j]} selected= {true} matched= {false} />);
-        }
-        column.push(
-            <div className= "row">
+      for(let i = 0; i < 4; i++) {
+          const row = [];
+          for (let j = 0; j < 4; j++) {
+              var grabNum = 4*i + j;
+              row.push(
+              <Card value={props.pairs[grabNum]} selected= {true} matched= {false} />);
+            }
+            column.push(
+            <div className= "row-board">
             {row}
             </div>
         );
     }
-    return <div className="column">{column}</div>
-  }
+    return <div className="column-board">{column}</div>
+}
 
   function Card(props) {
-    let value = <div className="coulum"> 
+    let value = <div className="column"> 
     <p>{props.value}</p>
     </div>
 
@@ -54,6 +60,4 @@ export default function game_init(root) {
         return <button class="button button-outline">?</button>;
     }
     return;
-
-
   }
