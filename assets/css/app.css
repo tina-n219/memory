@@ -5,6 +5,9 @@
 .row-board {
     padding: 5px;
 }
+.button-outline {
+    float:right;
+}
 
 button {
     margin-right: 100px;
