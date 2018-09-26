@@ -19,19 +19,15 @@ export default function game_init(root) {
     };
 
     generateBoard() {
-    const column = [];
-        for(let i = 0; i < 4; i++) {
-          const row = [];
-          for (let j = 0; j < 4; j++) {
-              row.push(
-                this.generateCard())
-                }
-            column.push({row});
-      }
-      return {column}
+    let column = [];
+        for(let i = 0; i < 16; i++) {
+          column.push(
+            this.generateCardData())
+        }
+      return column
     }
 
-    generateCard() {
+    generateCardData() {
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 4; j++) {
                 var grabNum = 4*i+j;
@@ -42,45 +38,57 @@ export default function game_init(root) {
         let cardValues = _.shuffle(_.concat(values, values))
         var card = {
             value: cardValues[grabNum],
-            selected: false,
+            selected: true,
             matched: false,
             cardID: uuidv1(),
         }
         return card;
     }
 
-    render() {
-        console.log(this.state.cards);
-        console.log(this.state.pairs);
+    render() { 
         let score = <div className="column">
             Score: {this.state.score}
         </div>
-
         let restart = <div className="column">
             <button class="button button-outline">Restart</button>
         </div>
-        
-        return 
-        <div className="column">
-       {score} {restart}
+        console.log(this.state)
+        console.log(this.state.cards[0])
+
+        let row1 = _.map(this.state.cards[0], (card) => {
+            return <Card data={card}/>;
+        });
+        let row2 = _.map(this.state.cards[1], (card) => {
+            return <Card data={card}/>;
+        });
+        let row3 = _.map(this.state.cards[2], (card) => {
+            return <Card data={card}/>;
+        });
+        let row4 = _.map(this.state.cards[3], (card) => {
+            return <Card data={card}/>;
+        });
+    return <div className="column-pairs">
+       {row1}
+       {row2}
+       {row3}
+       {row4}
        </div>
     }
 }
 
 
   function Card(props) {
-    let value = <div className="column"> 
-    <p>{props.value}</p>
-    </div>
+    let cardData = props.data;
+    let value = <p>{cardData.value}</p>;
 
-    if (props.matched) {
+    if (cardData.matched) {
         return <button>{value}</button>;
     }
-    if (props.selected) {
+    if (cardData.selected) {
         return <button>{value}</button>;
     }
 
-    if (!props.selected) {
+    if (!cardData.selected) {
         return <button>?</button>;
     }
     return;
