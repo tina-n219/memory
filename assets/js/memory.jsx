@@ -50,12 +50,30 @@ export default function game_init(root) {
         console.log(this.state.cards[0])
 
         let board = _.map(this.state.cards, (card) => {
-            return <Card data={card}/>;
+            return <Card data={card} buttoncall={this.click.bind(this)}/>;
         });
         
     return <div className="column-pairs">
        {board}
+       <button onClick={this.reset.bind(this)}>Reset</button>
+       Score: {this.state.score}
        </div>
+    }
+
+    click() {
+        let updateScore = this.state.score;
+        this.setState({
+            score: updateScore + 1
+        });
+        alert("Hello");
+    }
+
+    reset() {
+        console.log("HERE");
+        this.setState({
+            cards: this.generateBoard()
+        });
+        
     }
 }
 
@@ -63,16 +81,17 @@ export default function game_init(root) {
   function Card(props) {
     let cardData = props.data;
     let value = <p>{cardData.value}</p>;
+    let cardNum = cardData.cardID;
 
     if (cardData.matched) {
-        return <button>{value}</button>;
+        return <button onClick={() => props.buttoncall(cardNum)}>{value}</button>;
     }
     if (cardData.selected) {
-        return <button>{value}</button>;
+        return <button onClick={() => props.buttoncall(cardNum)}>{value}</button>;
     }
 
     if (!cardData.selected) {
-        return <button>?</button>;
+        return <button onClick={() => props.buttoncall(cardNum)}>?</button>;
     }
     return;
 
