@@ -7,9 +7,29 @@ export default function game_init(root) {
 }
 
 class Starter extends React.Component {
+  
   constructor(props) {
     super(props);
+    var cardvalues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+   // var cards = [];
+
+  var um = "3";
     this.state = { left: false };
+  }
+
+  createBoard() {
+    cardvalues._concat();
+    cardvalues._shuffle();
+    for (let index = 0; index < 16; index++) {
+      cards.push(newCard(cardvalues[i]));
+    }
+  }
+
+  newCard(props) {
+    var Card =
+      value = props.value;
+      flipped = false;
+      paired = false;
   }
 
   swap(_ev) {
@@ -22,26 +42,75 @@ class Starter extends React.Component {
   }
 
   render() {
-    let button = <div className="column" onMouseMove={this.swap.bind(this)}>
-      <p><button onClick={this.hax.bind(this)}>Click Me</button></p>
-    </div>;
 
-    let blank = <div className="column">
-      <p>Nothing here.</p>
-    </div>;
+	let card1 = 
+  <div className="col-3">
+    <div className="button">
+      <p>1</p>
+    </div>
+  </div>;
 
-    if (this.state.left) {
-      return <div className="row">
-        {button}
-        {blank}
-      </div>;
-    }
-    else {
-      return <div className="row">
-        {blank}
-        {button}
-      </div>;
-    }
-  }
+let card2 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card3 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card4 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card5 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card6 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card7 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+let card8 = 
+<div className="col-3">
+  <div className="button">
+    <p>?</p>
+  </div>
+</div>;
+
+  return <div className="row">
+    {card1}
+    {card2}
+    {card3}
+    {card4}
+    {card5}
+    {card6}
+    {card7}
+    {card8}
+     </div>;
+
 }
 
+
+}

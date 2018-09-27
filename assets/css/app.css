@@ -7,3 +7,36 @@
     text-align: center;
 }
 
+.row {
+    flex-wrap:wrap;
+}
+
+div {
+    display:block;
+}
+
+.col-3 {
+    width: 25%;
+    padding: 10px;
+}
+
+.button {
+    height: 100px;
+    width: 100px;
+    background: lightgrey;
+    text-align: center;
+    outline-style: none;
+}
+
+.button-clicked {
+    height: 100px;
+    width: 100px;
+    background: red;
+    text-align: center;
+}
+
+p {
+    padding-top: 40px;
+}
+
+
