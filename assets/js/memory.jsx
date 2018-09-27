@@ -9,6 +9,7 @@ export default function game_init(root) {
   class Board extends React.Component {
     constructor(props) {
         super(props)
+        var clickOne = null;
         this.state = { score: 0, 
                        gameOver: false, 
                        cards: this.generateBoard(),  
@@ -46,8 +47,6 @@ export default function game_init(root) {
         let restart = <div className="column">
             <button class="button button-outline">Restart</button>
         </div>
-        console.log(this.state)
-        console.log(this.state.cards[0])
 
         let board = _.map(this.state.cards, (card) => {
             return <Card data={card} buttoncall={this.click.bind(this)}/>;
@@ -61,14 +60,34 @@ export default function game_init(root) {
     }
 
     click(cardID) {
-        
-        let updateCards = _.map(this.state.cards, (card) => {
+        let stateCards = this.state.cards;
+        let flips = this.numFlips(stateCards);
+        let updateCards = [];
+
+        console.log(flips);
+        if (flips < 2) {
+            stateCards.map(card => {
             if(card.cardID === cardID) {
+                clickOne = card;
                 card.selected = true;
             }
-            return card;
-        });
+            updateCards.push(card);
+            });
 
+        }
+
+        if (flips === 2 && this.isAMatch(stateCards)) {
+            //change color
+            // look at two selected 
+            
+        }
+
+        if (flips === 2) {
+            // delay setTIMEOUT
+            // set them all to not selected
+            this.flipBack(stateCards);
+            
+        }
 
         let updateScore = this.state.score;
         this.setState({
@@ -78,13 +97,37 @@ export default function game_init(root) {
     }
 
     reset() {
-        console.log("HERE");
         this.setState({
             score: 0,
             cards: this.generateBoard()
         });
         
     }
+
+    numFlips(stateCards) {
+        let flipped = stateCards.filter(
+            card => card.selected).length + 1;
+            return flipped;
+    }
+
+    isAMatch(stateCards) {
+        let matched = stateCards.filter(
+            card => card.matched);
+
+        let c1 = matched[0];
+        let c2 = matched[1];
+
+        return c1.value === c2.value;
+    }
+
+    flipBack(stateCards) {
+        setTimeout(() =>
+            this.setState({
+                cards: stateCards
+            })
+        ,1000)
+    }
+
 }
 
 
