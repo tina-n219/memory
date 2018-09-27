@@ -55,23 +55,12 @@ export default function game_init(root) {
         console.log(this.state)
         console.log(this.state.cards[0])
 
-        let row1 = _.map(this.state.cards[0], (card) => {
+        let board = _.map(this.state.cards, (card) => {
             return <Card data={card}/>;
         });
-        let row2 = _.map(this.state.cards[1], (card) => {
-            return <Card data={card}/>;
-        });
-        let row3 = _.map(this.state.cards[2], (card) => {
-            return <Card data={card}/>;
-        });
-        let row4 = _.map(this.state.cards[3], (card) => {
-            return <Card data={card}/>;
-        });
+        
     return <div className="column-pairs">
-       {row1}
-       {row2}
-       {row3}
-       {row4}
+       {board}
        </div>
     }
 }
