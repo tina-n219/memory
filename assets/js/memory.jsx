@@ -9,35 +9,29 @@ export default function game_init(root) {
   class Board extends React.Component {
     constructor(props) {
         super(props)
-        let values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         this.state = { score: 0, 
                        gameOver: false, 
-                       pairs: _.shuffle(_.concat(values, values)),
-                       cards: this.generateBoard(),
-                       
+                       cards: this.generateBoard(),  
                     }
     };
 
     generateBoard() {
     let column = [];
+    let thisAnnoying = _.shuffle(['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f', 'g', 'g', 'h', 'h']);
+    console.log(thisAnnoying)
         for(let i = 0; i < 16; i++) {
           column.push(
-            this.generateCardData())
+            this.generateCardData(thisAnnoying, i))
         }
       return column
     }
 
-    generateCardData() {
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                var grabNum = 4*i+j;
-            } 
-        }
+    generateCardData(list, i) {
+        console.log("IN " + list);
         const uuidv1 = require('uuid/v1'); //Generates random id
-        let values = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        let cardValues = _.shuffle(_.concat(values, values))
+
         var card = {
-            value: cardValues[grabNum],
+            value: list[i],
             selected: true,
             matched: false,
             cardID: uuidv1(),
