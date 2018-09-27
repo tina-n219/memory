@@ -32,7 +32,7 @@ export default function game_init(root) {
 
         var card = {
             value: list[i],
-            selected: true,
+            selected: false,
             matched: false,
             cardID: uuidv1(),
         }
@@ -60,18 +60,20 @@ export default function game_init(root) {
        </div>
     }
 
-    click(carID) {
+    click(cardID) {
         
-        // _.map(this.state.cards, (cards) => {
-        //     if(cards.cardID == cardID) {
-        //         alert("HELLO" + cards.value);
-        //     }
-        // });
+        let updateCards = _.map(this.state.cards, (card) => {
+            if(card.cardID === cardID) {
+                card.selected = true;
+            }
+            return card;
+        });
 
 
         let updateScore = this.state.score;
         this.setState({
-            score: updateScore + 1
+            score: updateScore + 1,
+            cards: updateCards
         });
     }
 
