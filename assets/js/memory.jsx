@@ -60,12 +60,19 @@ export default function game_init(root) {
        </div>
     }
 
-    click() {
+    click(carID) {
+        
+        // _.map(this.state.cards, (cards) => {
+        //     if(cards.cardID == cardID) {
+        //         alert("HELLO" + cards.value);
+        //     }
+        // });
+
+
         let updateScore = this.state.score;
         this.setState({
             score: updateScore + 1
         });
-        //alert("Hello");
     }
 
     reset() {
