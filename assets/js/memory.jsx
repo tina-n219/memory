@@ -55,7 +55,7 @@ export default function game_init(root) {
         
     return <div className="column-pairs">
        {board}
-       <button onClick={this.reset.bind(this)}>Reset</button>
+       <button class="button button-outline" onClick={this.reset.bind(this)}>Reset</button>
        Score: {this.state.score}
        </div>
     }
@@ -65,12 +65,13 @@ export default function game_init(root) {
         this.setState({
             score: updateScore + 1
         });
-        alert("Hello");
+        //alert("Hello");
     }
 
     reset() {
         console.log("HERE");
         this.setState({
+            score: 0,
             cards: this.generateBoard()
         });
         
