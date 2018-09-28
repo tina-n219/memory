@@ -63,7 +63,7 @@ export default function game_init(root) {
         let flips = this.numFlips(stateCards);
         let updateCards = [];
 
-        console.log(flips);
+        //console.log(flips);
 
         if (flips < 2) {
             stateCards.map(card => {
@@ -75,20 +75,20 @@ export default function game_init(root) {
 
         }
 
-        // if (flips === 2 && this.isAMatch(stateCards, cardID, clickOne)) {
-        //     //change color
-        //     // look at two selected 
-
-        // }
-
         if (flips == 2) {
+            if(this.isAMatch(stateCards)) {
+                stateCards.map(card => {
+                    if(card.selected){
+                        card.matched = true;
+                    }
+                    updateCards.push(card);
+                })
+            }
+            else {
             // delay setTIMEOUT
             // set them all to not selected
-            this.flipBack(stateCards);
-            stateCards.map(card => {
-                card.selected = false;
-               
-            }) 
+            this.flipBack(stateCards); 
+            }
         }
 
         let updateScore = this.state.score;
@@ -111,18 +111,16 @@ export default function game_init(root) {
             return flipped;
     }
 
-    // isAMatch(stateCards) {
-    //     let matched = stateCards.filter(
-    //         card => card.matched);
-
-    //     let c1 = matched[0];
-    //     let c2 = matched[1];
-         
-    //     return c1.value == c2.value;
-    // }
-
     isAMatch(stateCards) {
-        return false;
+        let matched = stateCards.filter(
+            card => card.selected);
+            console.log("Match?");
+        let c1 = matched[0];
+        let c2 = matched[1];
+         console.log(c1.value);
+         console.log(c2.value);
+
+        return c1.value == c2.value;
     }
 
     flipBack(stateCards) {
@@ -132,6 +130,10 @@ export default function game_init(root) {
                 cards: stateCards
             })
         ,1000)
+        stateCards.map(card => {
+            card.selected = false;
+           
+        })
     }
 
 }
