@@ -67,7 +67,7 @@ export default function game_init(root) {
 
         if (flips < 2) {
             stateCards.map(card => {
-            if(card.cardID === cardID) {
+            if(card.cardID === cardID && !card.matched) {
                 card.selected = true;
             }
             updateCards.push(card);
