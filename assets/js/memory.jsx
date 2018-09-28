@@ -6,6 +6,9 @@ export default function game_init(root) {
     ReactDOM.render(<Board />, root);
   }
 
+  // Represents the Memory Game
+  // Keeps track of score via number of clicks on button
+  // Holds an array of the values of the tiles
   class Board extends React.Component {
     constructor(props) {
         super(props)
@@ -15,6 +18,7 @@ export default function game_init(root) {
                     }
     };
 
+    // creates an array of cards, in a random order
     generateBoard() {
     let column = [];
     let thisAnnoying = _.shuffle(['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f', 'g', 'g', 'h', 'h']);
@@ -26,6 +30,7 @@ export default function game_init(root) {
       return column
     }
 
+    // creates a card and 
     generateCardData(list, i) {
         console.log("IN " + list);
         const uuidv1 = require('uuid/v1'); //Generates random id
@@ -39,6 +44,7 @@ export default function game_init(root) {
         return card;
     }
 
+    // renders score, restart, and the board of tiles
     render() { 
         let score = <div className="column">
             Score: {this.state.score}
@@ -58,6 +64,10 @@ export default function game_init(root) {
        </div>
     }
 
+    // goes through the logic of the game:
+    // if you're flipping one card show it, 
+    // if you're flipping the second card, show it and check if it is a match 
+    // changes state accordingly
     click(cardID) {
         let stateCards = this.state.cards;
         let flips = this.numFlips(stateCards);
@@ -88,8 +98,6 @@ export default function game_init(root) {
                 })
             }
             else {
-            // delay setTIMEOUT
-            // set them all to not selected
             this.flipBack(stateCards); 
             }
         }
@@ -101,6 +109,7 @@ export default function game_init(root) {
         });
     }
 
+    // resets the state upon the press of the reset button
     reset() {
         this.setState({
             score: 0,
@@ -108,6 +117,7 @@ export default function game_init(root) {
         });
     }
 
+    // keeps track of how many cards have been flipped so far (i.e. 1 or 2)
     numFlips(stateCards) {
         let flipped = stateCards.filter(
             card => card.selected).length;
@@ -116,6 +126,7 @@ export default function game_init(root) {
             return flipped;
     }
 
+    // evaluates the viability of a match
     isAMatch(stateCards) {
         let matched = stateCards.filter(
             card => card.selected);
@@ -128,6 +139,7 @@ export default function game_init(root) {
         return c1.value == c2.value;
     }
 
+    // hides all flipped cards which do not match one another
     flipBack(stateCards) {
         console.log("in flip");
         setTimeout(() => {
@@ -143,6 +155,9 @@ export default function game_init(root) {
     }
 
 }
+
+// Component which represents a card
+// based on props passed in, this will return a specific button
   function Card(props) {
     let cardData = props.data;
     let value = <p>{cardData.value}</p>;
