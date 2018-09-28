@@ -72,13 +72,16 @@ export default function game_init(root) {
             }
             updateCards.push(card);
             });
-
+            flips = flips + 1;
         }
+
 
         if (flips == 2) {
             if(this.isAMatch(stateCards)) {
+                updateCards = [];
                 stateCards.map(card => {
                     if(card.selected){
+                        card.selected = false;
                         card.matched = true;
                     }
                     updateCards.push(card);
@@ -108,6 +111,8 @@ export default function game_init(root) {
     numFlips(stateCards) {
         let flipped = stateCards.filter(
             card => card.selected).length;
+            console.log(stateCards.filter(
+                card => card.selected));
             return flipped;
     }
 
@@ -125,15 +130,16 @@ export default function game_init(root) {
 
     flipBack(stateCards) {
         console.log("in flip");
-        setTimeout(() =>
+        setTimeout(() => {
+            stateCards.map(card => {
+                card.selected = false;
+               
+            })
             this.setState({
                 cards: stateCards
             })
+        }
         ,1000)
-        stateCards.map(card => {
-            card.selected = false;
-           
-        })
     }
 
 }
