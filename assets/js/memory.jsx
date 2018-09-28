@@ -149,7 +149,7 @@ export default function game_init(root) {
     let cardNum = cardData.cardID;
 
     if (cardData.matched) {
-        return <button  className="matched" onClick={() => props.buttoncall(cardNum)}>{value}</button>;
+        return <button  class="button matched" onClick={() => props.buttoncall(cardNum)}>{value}</button>;
     }
     if (cardData.selected) {
         return <button onClick={() => props.buttoncall(cardNum)}>{value}</button>;

@@ -19,8 +19,14 @@ button {
     font-weight: lighter;
 }
 
-button .matched {
-    background-color: forestgreen;
+.matched {
+    background-color: darksalmon;
+    height: 100px;
+    width: 165px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: lighter;
+    outline-color:green;
 }
 
 
