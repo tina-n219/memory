@@ -23,28 +23,34 @@ div {
 .button {
     height: 100px;
     width: 100px;
-    background: lightgrey;
+    background: purple;
     text-align: center;
     outline-style: none;
+    font-size: 30px;
 }
 
-.button-clicked {
-    height: 100px;
+#restartButton {
+    height: 50px;
     width: 100px;
-    background: red;
+    background: #7b7a7a;
     text-align: center;
+    outline-style: none;
+    font-size: 10px;
 }
+
+#restartButton p {
+    padding-top: 10px;
+    color: black;
+}
+
+.clicksCount h1 {
+    font-size: 30px;
+    padding-left: 500px;
+}
+
 
 p {
     padding-top: 40px;
+    color: black;
 }
-
-.hide{
-    display: none;
-}
-
-.show{
-    display: block;
-}
-
 

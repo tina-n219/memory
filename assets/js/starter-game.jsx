@@ -12,12 +12,24 @@ class Starter extends React.Component {
   constructor(props) {
     super(props);
     let cardvalues = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    //let originalclicks = 0;
+    this.startOver = this.startOver.bind(this)
+
+    //let clicks = 0;
     this.state = {
       board: this.createBoard(cardvalues),
-      //endGame: this.gameState(),
-      //clickCount: this.clickIncrease(originalclicks)
+      clickCount: 0,
+      firstCardClickedIndex: -1,
+      gameWon: false
     };
+  }
+
+  startOver() {
+    this.setState = ({
+      board: this.createBoard(this.cardvalues),
+      clickCount: 0,
+      firstCardClickedIndex: -1,
+      gameWon: false
+    });
   }
 
   // Create the board of cards, where every card has a letter value, and whether 
@@ -26,174 +38,118 @@ class Starter extends React.Component {
     let cardsready = _.shuffle(_.concat(pairs, pairs));
     let cards = [];
     for (let index = 0; index < 16; index++) {
+      console.log(index);
       var onecard = 
       {
         flipped: false,
         paired: false,
         cardvalue: cardsready[index]
       }
-
-      if (!onecard.flipped) {
-        onecard.cardvalue = "?";
-      }
       cards.push(onecard);
     }
     return cards;
   }
 
-  // If a button is clicked, show the cardValue for 5 seconds
-  // Check if another card has been flipped, and if so, are they the same
-  // If they are the same, switch both to paired
-  // If another card has not been flipped, leave it 
-  // Add a click to the counter
-  
-// clickIncrease() {
-//   this.clickCount =+ 1;
-// }  
-  
-  flipCard() {
-    this.state.board[0].flipped = true;
-    console.log(1);
-    //this.clicks += 1;
+  disableClick() {
+    let flippedCards = this.state.board.filter(onecard => {
+       onecard.flipped;
+    });
+    console.log(flippedCards.length);
+    return false;
   }
 
+
+  flipCard(index) {
+
+    if (this.disableClick()) {
+      return;
+    }
+    
+    // Increase click count
+    let clickCount = this.state.clickCount;
+    clickCount = clickCount + 1;
+
+    // Flip the card
+    let cardClicked = this.state.board[index];
+    cardClicked.flipped = true;
+
+    // Update the board
+    this.state.clickCount = clickCount;
+    let newBoard =this.state.board;
+    let state1 = _.assign( {}, this.state, newBoard);
+    this.setState(state1);
+
+
+    let checkFlipped = () => {
+
+      if (this.state.firstCardClickedIndex > 0 && clickCount % 2 == 0) {
+        
+        let firstCardClicked = this.state.board[this.state.firstCardClickedIndex];
+
+         // Are their values equal?
+        if (firstCardClicked.cardvalue == cardClicked.cardvalue && !(cardClicked.key == firstCardClicked.cardvalue)) {
+          firstCardClicked.paired = true; 
+          cardClicked.paired = true;
+        }
+
+        // If values are not equal
+        else {
+          firstCardClicked.paired = false;
+          cardClicked.paired = false;
+          firstCardClicked.flipped = false;
+          cardClicked.flipped = false;
+        }
+   
+        // UPDATE THE BOARD
+        this.state.board[this.state.lastCardClicked] = firstCardClicked;
+        this.state.board[index] = cardClicked;
+        this.state.lastCardClicked = -1;
+   
+        // Update the board
+        let newBoard2 =this.state.board;
+        let state2 = _.assign( {}, this.state, newBoard2);
+        this.setState(state2);
+      }
+      else {
+        this.state.firstCardClickedIndex = index;
+      }
+    }
+    setTimeout(() => { checkFlipped(); }, 1000);
+  }
+
+
   render() {
-
-	let card1 = 
-  <div className="col-3">
-    <div className="button" onClick={this.flipCard.bind(this)}>
-      <p>{this.state.board[0].cardvalue}</p>
-    </div>
-  </div>;
-
-let card2 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[1].cardvalue}</p>
-  </div>
-</div>;
-
-let card3 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[2].cardvalue}</p>
-  </div>
-</div>;
-
-let card4 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[3].cardvalue}</p>
-  </div>
-</div>;
-
-let card5 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[4].cardvalue}</p>
-  </div>
-</div>;
-
-let card6 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[4].cardvalue}</p>
-  </div>
-</div>;
-
-let card7 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[5].cardvalue}</p>
-  </div>
-</div>;
-
-let card8 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[6].cardvalue}</p>
-  </div>
-</div>;
-
-let card9 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[7].cardvalue}</p>
-  </div>
-</div>;
-
-let card10 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[9].cardvalue}</p>
-  </div>
-</div>;
-
-let card11 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[10].cardvalue}</p>
-  </div>
-</div>;
+    if (this.state.gameWon) {
+      return;
+    }
+else {
 
 
-let card12 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[11].cardvalue}</p>
-  </div>
-</div>;
+  return (
+    <div className="row">
+      {_.map(this.state.board, (tile, i) => <Tile key={i} cardvalue={tile.cardvalue} hidden={tile.flipped || tile.paired} onClick={this.flipCard.bind(this, i)}/>)}
+      <div className="button" id="restartButton" onClick={this.startOver.bind(this)}>
+       <p> Restart </p>
+      </div>
 
-
-let card13 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[12].cardvalue}</p>
-  </div>
-</div>;
-
-let card14 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[13].cardvalue}</p>
-  </div>
-</div>;
-
-let card15 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[14].cardvalue}</p>
-  </div>
-</div>;
-
-let card16 = 
-<div className="col-3">
-  <div className="button">
-    <p>{this.state.board[15].cardvalue}</p>
-  </div>
-</div>;
-
-  return <div className="row">
-    {card1}
-    {card2}
-    {card3}
-    {card4}
-    {card5}
-    {card6}
-    {card7}
-    {card8}
-    {card9}
-    {card10}
-    {card11}
-    {card12}
-    {card13}
-    {card14}
-    {card15}
-    {card16}
- 
-     </div>;
-
+      <div  className="row">
+        <div className="clicksCount">
+         <h1> Clicks: {this.state.clickCount}</h1>
+        </div>
+      </div>
+   </div>
+  );
+  }
+}
 }
 
-
+function Tile(props) {
+  return (
+    <div className="col-3">
+      <div className="button" onClick={props.onClick}>
+       <p> {props.hidden ? props.cardvalue : "?"} </p>
+      </div>
+    </div>
+  );
+  
 }
