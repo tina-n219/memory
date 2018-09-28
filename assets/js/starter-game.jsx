@@ -19,7 +19,7 @@ class Starter extends React.Component {
       board: this.createBoard(cardvalues),
       clickCount: 0,
       firstCardClickedIndex: -1,
-      gameWon: false
+      gameWon: false,
     };
   }
 
@@ -38,7 +38,6 @@ class Starter extends React.Component {
     let cardsready = _.shuffle(_.concat(pairs, pairs));
     let cards = [];
     for (let index = 0; index < 16; index++) {
-      console.log(index);
       var onecard = 
       {
         flipped: false,
@@ -54,12 +53,38 @@ class Starter extends React.Component {
     let flippedCards = this.state.board.filter(onecard => {
        onecard.flipped;
     });
-    console.log(flippedCards.length);
     return false;
   }
 
 
+  gameStatus() {
+    let pairedCards = [];
+    this.state.board.forEach(onecard => {
+      if (onecard.paired){
+        pairedCards.push(onecard);
+      }
+    });
+    console.log(pairedCards.length);
+    if (pairedCards.length == 14)  {
+      return true;
+    }
+    else {
+      return false;
+
+    } 
+  }
+
   flipCard(index) {
+    if (this.gameStatus()) {
+      this.state.gameWon = true;
+      this.state.board = [];
+      return;
+    }
+    
+    if (this.state.board[index].paired) {
+      return;
+    }
+
 
     if (this.disableClick()) {
       return;
@@ -81,9 +106,9 @@ class Starter extends React.Component {
 
 
     let checkFlipped = () => {
-
       if (this.state.firstCardClickedIndex > 0 && clickCount % 2 == 0) {
         
+        console.log(this.state.firstCardClickedIndex > 0 && clickCount % 2 == 0);
         let firstCardClicked = this.state.board[this.state.firstCardClickedIndex];
 
          // Are their values equal?
@@ -120,11 +145,15 @@ class Starter extends React.Component {
 
   render() {
     if (this.state.gameWon) {
-      return;
+      return (
+        <div className="col-3">
+      <div className="button" >
+       <p> Congrats, you won! </p>
+      </div>
+    </div>
+      )
     }
 else {
-
-
   return (
     <div className="row">
       {_.map(this.state.board, (tile, i) => <Tile key={i} cardvalue={tile.cardvalue} hidden={tile.flipped || tile.paired} onClick={this.flipCard.bind(this, i)}/>)}
