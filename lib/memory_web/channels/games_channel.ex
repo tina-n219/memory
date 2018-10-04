@@ -1,6 +1,8 @@
 defmodule MemoryWeb.GamesChannel do
   use MemoryWeb, :channel
 
+  alias Memory.Game
+
   def join("games:" <> name, payload, socket) do
     if authorized?(payload) do
       game = Game.new()
@@ -21,7 +23,7 @@ defmodule MemoryWeb.GamesChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
-  def handle_in("guess", %{"index" => ii}, socket) do
+  def handle_in("selected", %{"index" => ii}, socket) do
     game = Game.guess(socket.assigns[:game], ii)
     socket = assign(socket, :game, game)
     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}

@@ -33,6 +33,6 @@ export default function game_init(root, channel) {
     function Score(props) {
         let score = props.score;
         return <p>Score: { score }</p>;
-    }
+    }  
 
      

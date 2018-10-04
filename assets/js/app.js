@@ -19,30 +19,16 @@ import $ from "jquery";
 import socket from "./socket";
 import game_init from "./memory";
 
-let channel = socket.channel("games:demo", {});
+let channel = socket.channel("games:default", {});
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) });
   
-function form_init() {
-  $('#game-button').click(() => {
-    let xx = $('#userName-input').val();
-    console.log("join", xx);
-    channel.push("join", { xx: xx }).receive("joined", msg => {
-      console.log("joined", msg);
-      $('#userName-output').text(msg.yy);
-    });
-  });
-}
 
 function start() {
   let root = document.getElementById('root');
   if (root) {
     game_init(root);
-  }
-
-  if (document.getElementById('game-input')) {
-    form_init();
   }
 }
 

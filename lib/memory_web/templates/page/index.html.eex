@@ -1,7 +1,9 @@
 <div class="row">
   <div class="column">
     <h1>Join a Game</h1>
+    <form action="" method="post">
     <p><input type="text" id="userName-input"></p>
     <p><button id="game-button">Join</button></p>
+    </form>
   </div>
 </div>

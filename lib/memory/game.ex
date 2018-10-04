@@ -1,5 +1,5 @@
 defmodule Memory.Game do
-   # use GenServer
+ use GenServer
 
     # def setup do
     #   {:ok, _} = Registry.start_link(keys: :unique, name: Memory.Registry)
@@ -63,9 +63,9 @@ defmodule Memory.Game do
     #     matches = isMatch();
        
 
-    #     if numFlips < 2 do
-    #          # update guesses 
-    #     end
+        # if numFlips < 2 do
+        #      # update guesses 
+        # end
 
     #     click(game, letterIndex, numFlips, isMatch);
     
