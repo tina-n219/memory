@@ -11,6 +11,7 @@ defmodule MemoryWeb.GamesChannel do
       |> assign(:name, name)
       {:ok, %{"join" => name, "game" => Game.client_view(game)}, socket}
     else
+
       {:error, %{reason: "unauthorized"}}
     end
   end
@@ -28,8 +29,6 @@ defmodule MemoryWeb.GamesChannel do
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}
   end
-
-  
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby). 
