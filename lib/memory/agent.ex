@@ -21,9 +21,9 @@ defmodule Memory.Agent do
       GenServer.call(reg(id), {:guess, cardindex})
     end
 
-    def hand_call(:guess. _from, cardIndex) do
-      {:reply, Memory.Game.guess(_from, cardIndex)}   
-    end
+    # def hand_call(:guess. _from, cardIndex) do
+    #   {:reply, Memory.Game.guess(_from, cardIndex)}   
+    # end
   
   end
   
