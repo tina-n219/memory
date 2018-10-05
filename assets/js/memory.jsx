@@ -35,11 +35,11 @@ export default function game_init(root, channel) {
 
       render() {
         let board = _.map(this.state.skel, (card) => {
-            return <Card value={card} buttoncall={this.click.bind(this)}/>;
+            return <Card value={card}/>;
         });
 
         return <div className="column-pairs">
-        {/* {board} */}
+        {board}
         <button className="button button-outline">Reset</button>
         Score: {this.state.score}
         </div>
@@ -51,15 +51,15 @@ export default function game_init(root, channel) {
         // let value = <p>{cardData.value}</p>;
         // let cardNum = cardData.cardID;
     
-        if (cardData.matched) {
-            return <button  class="button matched" onClick={() => props.buttoncall(cardNum)}>{value}</button>;
+        if (props.matched) {
+            return <button  class="button matched">{value}</button>;
         }
-        if (cardData.selected) {
-            return <button onClick={() => props.buttoncall(cardNum)}>{props}</button>;
+        if (props.selected) {
+            return <button>{props}</button>;
         }
     
-        if (!cardData.selected) {
-            return <button onClick={() => props.buttoncall(cardNum)}>?</button>;
+        if (!props.selected) {
+            return <button>?</button>;
         }
         return;
       }
