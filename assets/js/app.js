@@ -19,16 +19,12 @@ import $ from "jquery";
 import socket from "./socket";
 import game_init from "./memory";
 
-let channel = socket.channel("games:default", {});
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) });
-  
 
 function start() {
   let root = document.getElementById('root');
   if (root) {
-    game_init(root);
+    let channel = socket.channel("games:" + window.gameName, {});
+    game_init(root, channel);
   }
 }
 

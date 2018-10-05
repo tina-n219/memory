@@ -25,14 +25,43 @@ export default function game_init(root, channel) {
       }
 
       sendGuess(event) {
-        this.channel.push("guess", { letter: ev.key })
+        this.channel.push("guess", { letter: event.key })
             .receive("ok", this.gotView.bind(this));
+      }
+
+      restart() {
+          this.channel.push("restart", )
+      }
+
+      render() {
+        let board = _.map(this.state.skel, (card) => {
+            return <Card value={card} buttoncall={this.click.bind(this)}/>;
+        });
+
+        return <div className="column-pairs">
+        {/* {board} */}
+        <button className="button button-outline">Reset</button>
+        Score: {this.state.score}
+        </div>
       }
     }
 
-    function Score(props) {
-        let score = props.score;
-        return <p>Score: { score }</p>;
-    }  
+    function Card(props) {
+        // let cardData = props.data;
+        // let value = <p>{cardData.value}</p>;
+        // let cardNum = cardData.cardID;
+    
+        if (cardData.matched) {
+            return <button  class="button matched" onClick={() => props.buttoncall(cardNum)}>{value}</button>;
+        }
+        if (cardData.selected) {
+            return <button onClick={() => props.buttoncall(cardNum)}>{props}</button>;
+        }
+    
+        if (!cardData.selected) {
+            return <button onClick={() => props.buttoncall(cardNum)}>?</button>;
+        }
+        return;
+      }
 
      

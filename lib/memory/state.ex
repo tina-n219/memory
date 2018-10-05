@@ -1,6 +1,5 @@
 defmodule Memory.State do
 
-
     def new() do 
         %{
             board: gen_board(),
@@ -60,15 +59,15 @@ defmodule Memory.State do
             cardOne = Enum.at(flippedList, 0);
             cardTwo = Enum.at(flippedList, 1);
         
-            if (cardOne.value == cardTwo.value) do
+            if (cardOne.value == cardTwo.value && !cardOne.matched && !cardTwo.matched) do
                 cardOne = %{cardOne | selected: false, matched: true}
                 cardTwo = %{cardTwo | selected: false, matched: true}
             
             else
-                Process.slepp(5000);
+                Process.sleep(5000);
                 cardOne = %{cardOne | selected: false, matched: false}
                 cardTwo = %{cardTwo | selected: false, matched: false}
-                Process.send_after(self(), :guess, 5_000); #????
+                
             end
             Map.put(game, :board, updateBoard)
         end
