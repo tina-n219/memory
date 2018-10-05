@@ -27,20 +27,20 @@ defmodule Memory.State do
 
     def client_view(game) do 
         %{
-            skel: skeleton(game.board), 
+            skel: game.board, 
             score: 0
         }
     end
 
-    def skeleton(cardList) do
-        Enum.map cardList, fn card ->
-            if (card.selected || card.matched) do
-                card.value
-            else 
-                "-?-"
-            end
-        end 
-    end
+    # def skeleton(cardList) do
+    #     Enum.map cardList, fn card ->
+    #         if (card.selected || card.matched) do
+    #             card.value
+    #         else 
+    #             "-?-"
+    #         end
+    #     end 
+    # end
 
     def guess(game, cardIndex) do
         updateBoard = game.board;

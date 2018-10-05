@@ -27,14 +27,18 @@ defmodule Memory.Game do
     end
 
     def guess(id, cardIndex) do
-        GenServer.call(id)
+        GenServer.call(reg(id), {:guess, cardIndex})
     end
 
-    # def select_Card(id, cardID) do
-    #     GenServer.call(reg(id), {:selected, cardID, id})
-    # end
+    def client_view(id) do
+        GenServer.call(reg(id), :client_view)
+    end
 
-    # def handle_call(:select_Card, _from, id) do
-    #     #{:reply, Memory.state....}
-    # end
+    def handle_call(:guess, _from, cardIndex) do
+        {:noreply, Memory.State.guess(_from, cardIndex)}
+    end
+
+    def handle_call(:client_view, _from, game) do
+        
+    end
 end

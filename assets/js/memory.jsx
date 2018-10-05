@@ -11,7 +11,7 @@ export default function game_init(root, channel) {
         super(props)
 
         this.channel = props.channel;
-        this.state = { skel: [], score: 0}; // cards: this.generateBoard() };
+        this.state = { skel: [], score: 0}; 
 
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
@@ -24,8 +24,8 @@ export default function game_init(root, channel) {
         this.setState(view.game);
       }
 
-      sendGuess(event) {
-        this.channel.push("guess", { letter: event.key })
+      sendGuess(i) {
+        this.channel.push("guess", { cardIndex: i })
             .receive("ok", this.gotView.bind(this));
       }
 
@@ -35,7 +35,7 @@ export default function game_init(root, channel) {
 
       render() {
         let board = _.map(this.state.skel, (card) => {
-            return <Card value={card}/>;
+            return <Card value={card} buttoncall={this.sendGuess.bind(this)}/>;
         });
 
         return <div className="column-pairs">
@@ -47,19 +47,22 @@ export default function game_init(root, channel) {
     }
 
     function Card(props) {
-        // let cardData = props.data;
+        let cardData = props.value;
         // let value = <p>{cardData.value}</p>;
         // let cardNum = cardData.cardID;
-    
-        if (props.matched) {
-            return <button  class="button matched">{value}</button>;
+        
+        if (cardData.matched) {
+            console.log("match")
+            return <button  class="button matched">{cardData.cardIndex}</button>;
         }
-        if (props.selected) {
-            return <button>{props}</button>;
+        if (cardData.selected) {
+            console.log("selected")
+            return <button>{cardData.cardIndex}</button>;
         }
     
-        if (!props.selected) {
-            return <button>?</button>;
+        if (!cardData.selected) {
+            console.log("selecting")
+            return <button onClick={() => props.buttoncall(cardData.cardIndex)}>?</button>;
         }
         return;
       }

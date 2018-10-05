@@ -23,7 +23,7 @@ defmodule MemoryWeb.GamesChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
-  def handle_in("selected", %{"index" => ii}, socket) do
+  def handle_in("guess", %{"index" => ii}, socket) do
     game = State.guess(socket.assigns[:game], ii)
     socket = assign(socket, :game, game)
     {:reply, {:ok, %{ "game" => State.client_view(game)}}, socket}
