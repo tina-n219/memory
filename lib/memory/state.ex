@@ -9,15 +9,16 @@ defmodule Memory.State do
     end
 
     def gen_board() do
-        values = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f', 'g', 'g', 'h', 'h'];
-
-        values
+        whydontyouwork = ["a", "a", "b", "b", "c", "c", "d", "d", "e", "e", "f", "f", "g", "g", "h", "h"];
+        ughAHH = "aabbccddeeffgghh"
+        ughAHH
+        |> String.graphemes()
         |> Enum.shuffle()
         |> Enum.with_index
-        |> Enum.map( fn(card) ->
+        |> Enum.map( fn {letter, index} ->
             %{
-                value: elem(card, 0),
-                cardID: elem(card, 1),
+                value: letter,
+                cardID: index,
                 selected: false,
                 matched: false
             }
@@ -45,33 +46,40 @@ defmodule Memory.State do
     def guess(game, cardIndex) do
         updateBoard = game.board;
         cardSelected = Enum.at(updateBoard, cardIndex);
-        flippedList = game.flipped;
 
-        gameScore = game.score;
+        selected = Enum.filter(game.board, fn card ->
+            card.selected == true
+        end)
 
-        if (length(flippedList) < 2) do 
-           flippedList = flippedList ++ cardSelected;
-           cardSelected = %{cardSelected | selected: true}
-           Map.put(game, :board, updateBoard)
-        end
-
-        if (length(flippedList) == 2) do
-            cardOne = Enum.at(flippedList, 0);
-            cardTwo = Enum.at(flippedList, 1);
-        
-            if (cardOne.value == cardTwo.value && !cardOne.matched && !cardTwo.matched) do
-                cardOne = %{cardOne | selected: false, matched: true}
-                cardTwo = %{cardTwo | selected: false, matched: true}
-            
-            else
-                Process.sleep(5000);
-                cardOne = %{cardOne | selected: false, matched: false}
-                cardTwo = %{cardTwo | selected: false, matched: false}
-                
-            end
+        if (length(selected) < 2) do 
+        #    cardSelected = %{cardSelected | selected: true}
+            Enum.map(updateBoard, fn (card) ->
+                if(card.cardID == cardIndex) do
+                    # Map.put(game, :score, game.score + 1)
+                    # |> Map.put(card, :selected, true) 
+                    Map.put(card, :selected, true)
+                end
+            end)
             Map.put(game, :board, updateBoard)
         end
-        gameScore = gameScore + 1;
+
+        # if (length(flippedList) == 2) do
+        #     cardOne = Enum.at(flippedList, 0);
+        #     cardTwo = Enum.at(flippedList, 1);
+        
+        #     if (cardOne.value == cardTwo.value && !cardOne.matched && !cardTwo.matched) do
+        #         cardOne = %{cardOne | selected: false, matched: true}
+        #         cardTwo = %{cardTwo | selected: false, matched: true}
+            
+        #     else
+        #         Process.sleep(5000);
+        #         cardOne = %{cardOne | selected: false, matched: false}
+        #         cardTwo = %{cardTwo | selected: false, matched: false}
+                
+        #     end
+        #     Map.put(game, :board, updateBoard)
+        # end
+        
     end
 
 end

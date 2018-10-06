@@ -11,8 +11,13 @@ export default function game_init(root, channel) {
         super(props)
 
         this.channel = props.channel;
-        this.state = { skel: [], score: 0}; 
+        this.state = { 
+            skel: [], 
+            score: 0}; 
 
+        
+        // {"ok", view}
+        // {:ok, %{"game" => State.client_view(game)}}
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
                     .receive("error", resp => { console.log("Unable to join", resp) });
@@ -20,27 +25,36 @@ export default function game_init(root, channel) {
     };
 
     gotView(view) {
-        console.log("new view", view);
+        // console.log("new view", view);
+
+       /* game = %{
+            skel: game.board, 
+            score: 0
+        } */
+
+        console.log(view.game)
         this.setState(view.game);
       }
 
-      sendGuess(i) {
-        this.channel.push("guess", { cardIndex: i })
+      guess(cardID) {
+        this.channel.push("selectCard", { index: cardID })
             .receive("ok", this.gotView.bind(this));
       }
 
       restart() {
-          this.channel.push("restart", )
+          this.channel.push("restart")
+          .receive("ok", this.gotView.bind);
       }
 
       render() {
         let board = _.map(this.state.skel, (card) => {
-            return <Card value={card} buttoncall={this.sendGuess.bind(this)}/>;
+            return <Card value={card} buttoncall={this.guess.bind(this)}/>;
         });
 
+        //console.log(this.state.skel)
         return <div className="column-pairs">
         {board}
-        <button className="button button-outline">Reset</button>
+        <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
         Score: {this.state.score}
         </div>
       }
@@ -53,16 +67,17 @@ export default function game_init(root, channel) {
         
         if (cardData.matched) {
             console.log("match")
-            return <button  class="button matched">{cardData.cardIndex}</button>;
+            return <button  class="button matched">{cardData.value}</button>;
         }
         if (cardData.selected) {
             console.log("selected")
-            return <button>{cardData.cardIndex}</button>;
+            return <button>{cardData.value}</button>;
         }
     
         if (!cardData.selected) {
             console.log("selecting")
-            return <button onClick={() => props.buttoncall(cardData.cardIndex)}>?</button>;
+            return <button onClick={() => props.buttoncall(cardData.cardID)}>?</button>;
+            
         }
         return;
       }

@@ -12,6 +12,10 @@ defmodule Memory.Application do
       MemoryWeb.Endpoint,
       # Starts a worker by calling: Memory.Worker.start_link(arg)
       # {Memory.Worker, arg},
+      Memory.BackupAgent,
+      # Us guessing about shit that needs to be started and supervised
+      # By the shit going on in this file
+      
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
