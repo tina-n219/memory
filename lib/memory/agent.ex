@@ -1,29 +1,23 @@
+# Code based on Nat Tuck's Agent notes
+# http://www.ccs.neu.edu/home/ntuck/courses/2018/09/cs4550/notes/agent.ex
+
 defmodule Memory.Agent do
-  use GenServer
+  use Agent
 
-  def setup do
-    {:ok, _} = Registry.start_link(keys: :unique, name: Memory.Registry)
+def start_link(_args) do
+  Agent.start_link(fn -> %{} end, name: __MODULE__)
+end
 
-    {:ok, _} = DynamicSupervisor.start_link(
-      strategy: :one_for_one, name: Memory.Sup)
+def put(name, val) do
+  Agent.update __MODULE__, fn state ->
+    Map.put(state, name, val)
   end
+end
 
-  def reg(id) do
-    {:via, Registry, {Memory.Registry, id}}
+def get(name) do
+  Agent.get __MODULE__, fn state ->
+    Map.get(state, name)
+      end
   end
-  
-  
-    def start_link(game) do
-      GenServer.start_link(__MODULE__, game)
-    end
-
-    def guess(id, cardindex) do
-      GenServer.call(reg(id), {:guess, cardindex})
-    end
-
-    # def hand_call(:guess. _from, cardIndex) do
-    #   {:reply, Memory.Game.guess(_from, cardIndex)}   
-    # end
-  
-  end
+end
   

@@ -33,10 +33,9 @@ class Starter extends React.Component {
   }
 
   sendGuess(index) {
-    this.channel.push("guess", { index })
+    this.channel.push("guess", { index: index})
         .receive("ok", this.gotView.bind(this));
   }
-
 
   restart() {
     this.setState({
@@ -90,7 +89,6 @@ class Starter extends React.Component {
   }
 
   flipCard(index) {
-
     // If they click on already flipped / paired cards, don't allow them to click
     if (this.state.board[index].paired || this.disableClick()) {
       return;
@@ -172,7 +170,7 @@ class Starter extends React.Component {
     return (
     <div className="row">
       {_.map(this.state.board, (tile, i) => <Tile key={i} cardvalue={tile.cardvalue} hidden={tile.flipped || tile.paired} onClick={this.flipCard.bind(this, i)}/>)}
-      <div className="button" id="restartButton" >
+      <div className="button" id="restartButton">
        <p> Restart </p>
       </div>
 
