@@ -3,7 +3,6 @@ defmodule Memory.State do
     def new() do 
         %{
             board: gen_board(),
-            flipped: [],
             score: 0
         }
     end
@@ -45,23 +44,26 @@ defmodule Memory.State do
 
     def guess(game, cardIndex) do
         updateBoard = game.board;
-        cardSelected = Enum.at(updateBoard, cardIndex);
+        updatedScore = game.score + 1;
 
-        selected = Enum.filter(game.board, fn card ->
-            card.selected == true
-        end)
+        Map.put(game, :score, updatedScore);
+        
+        # cardSelected = Enum.at(updateBoard, cardIndex);
 
-        if (length(selected) < 2) do 
-        #    cardSelected = %{cardSelected | selected: true}
-            Enum.map(updateBoard, fn (card) ->
-                if(card.cardID == cardIndex) do
-                    # Map.put(game, :score, game.score + 1)
-                    # |> Map.put(card, :selected, true) 
-                    Map.put(card, :selected, true)
-                end
-            end)
-            Map.put(game, :board, updateBoard)
-        end
+        # selected = Enum.filter(game.board, fn card ->
+        #     card.selected == true
+        # end)
+
+        # if (length(selected) < 2) do 
+        #     Enum.map(updateBoard, fn (card) ->
+        #         if(card.cardID == cardIndex) do
+        #            #Map.put(card, :selected, true)
+        #            card = %{card | selected: true}
+        #         end
+        #     end)
+        #     Map.put(game, :board, updateBoard)
+        # end
+        #end
 
         # if (length(flippedList) == 2) do
         #     cardOne = Enum.at(flippedList, 0);

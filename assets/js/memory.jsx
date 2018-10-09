@@ -47,6 +47,7 @@ export default function game_init(root, channel) {
       }
 
       render() {
+        console.log(this.state.score)
         let board = _.map(this.state.skel, (card) => {
             return <Card value={card} buttoncall={this.guess.bind(this)}/>;
         });
@@ -62,8 +63,6 @@ export default function game_init(root, channel) {
 
     function Card(props) {
         let cardData = props.value;
-        // let value = <p>{cardData.value}</p>;
-        // let cardNum = cardData.cardID;
         
         if (cardData.matched) {
             console.log("match")
