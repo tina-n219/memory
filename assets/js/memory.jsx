@@ -53,7 +53,7 @@ export default function game_init(root, channel) {
         //console.log(this.state.skel)
         return <div className="column-pairs">
         {board}
-        {/* <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button> */}
+        <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
         Score: {this.state.score}
         </div>
       }

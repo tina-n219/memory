@@ -65,6 +65,10 @@ defmodule Memory.State do
             end)
             Map.put(game, :board, newBoard)
         end
+
+        if (length(selected) == 2) do
+            
+        end
     end
 
 end
