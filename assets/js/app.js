@@ -19,6 +19,7 @@ import $ from "jquery";
 import socket from "./socket";
 import game_init from "./memory";
 
+socket.connect()
 
 function start() {
   let root = document.getElementById('root');

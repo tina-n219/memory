@@ -1,7 +1,6 @@
 # Code credit to Nat Tuck
 # https://github.com/NatTuck/hangman/blob/multiplayer/lib/hangman/game_server.ex
-
-defmodule Memory.GameServer do
+defmodule Hangman.GameServer do
   use GenServer
 
   alias Memory.State

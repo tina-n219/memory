@@ -2,17 +2,15 @@ defmodule MemoryWeb.GamesChannel do
   alias Memory.State
   use GenServer
 
-  def join("games:" <> name, payload, socket) do
+
+  def join("games:" <> game, payload, socket) do
     if authorized?(payload) do
-      game = State.new()
-      socket = socket
-      |> assign(:game, game)
-      |> assign(:name, name)
-      {:ok, %{"join" => name, "game" => State.client_view(game)}, socket}
+      socket = assign(socket, :game, game)
+      view = GameServer.view(game, socket.assigns[:user])
+      {:ok, %{"join" => game, "game" => view}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
-  end
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
@@ -23,9 +21,8 @@ defmodule MemoryWeb.GamesChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
   def handle_in("selectCard", %{"index" => ii}, socket) do
-    game = State.guess(socket.assigns[:game], ii)
-    socket = assign(socket, :game, game)
-    {:reply, {:ok, %{ "game" => State.client_view(game)}}, socket}
+    view = GameServer.guess(socket.assigns[:game], socket.assigns[:user], ii)
+    {:reply, {:ok, %{ "game" => view}}, socket}
   end
 
   # def handle_in("restart", payload, socket) do
