@@ -19,6 +19,7 @@ defmodule MemoryWeb.Router do
 
     get "/", PageController, :index
     get "/game/:game", PageController, :game
+    post "/join", PageController, :join
   end
 
   # Other scopes may use custom stacks.
