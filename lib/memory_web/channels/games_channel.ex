@@ -20,7 +20,7 @@ defmodule MemoryWeb.GamesChannel do
   # broadcast to everyone in the current topic (games:lobby).
   def handle_in("selectCard", %{"index" => ii}, socket) do
     view = GameServer.guess(socket.assigns[:game], socket.assigns[:user], ii)
-    broadcast(socket, event, message)
+    broadcast(socket, "selectCard", view)
     {:reply, {:ok, %{ "game" => view}}, socket}
   end
 
