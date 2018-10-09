@@ -48,22 +48,25 @@ defmodule Memory.State do
 
         Map.put(game, :score, updatedScore);
         
-        # cardSelected = Enum.at(updateBoard, cardIndex);
+        cardSelected = Enum.at(updateBoard, cardIndex);
 
-        # selected = Enum.filter(game.board, fn card ->
-        #     card.selected == true
-        # end)
+        selected = Enum.filter(game.board, fn card ->
+            card.selected == true
+        end)
 
-        # if (length(selected) < 2) do 
-        #     Enum.map(updateBoard, fn (card) ->
-        #         if(card.cardID == cardIndex) do
-        #            #Map.put(card, :selected, true)
-        #            card = %{card | selected: true}
-        #         end
-        #     end)
-        #     Map.put(game, :board, updateBoard)
-        # end
-        #end
+        # Here I am just trying to get this function to flip a card
+        # before I get the rest of the logic to work
+        # I am just trying to get some response from my front end
+        if (length(selected) < 2) do 
+            Enum.map(updateBoard, fn (card) ->
+                if(card.cardID == cardIndex) do
+                   #Map.put(card, :selected, true)
+                   card = %{card | selected: true}
+                end
+            end)
+            Map.put(game, :board, updateBoard)
+        end
+        end
 
         # if (length(flippedList) == 2) do
         #     cardOne = Enum.at(flippedList, 0);
