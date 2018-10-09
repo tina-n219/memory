@@ -52,7 +52,7 @@ defmodule Memory.Game do
         end)
         Map.put(gametemp, :board, newCards)
 
-        $Process.sleep(5000)
+        #Process.sleep(5000)
     end
 
     def client_view(game) do
