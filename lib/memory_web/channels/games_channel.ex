@@ -2,7 +2,7 @@ defmodule MemoryWeb.GamesChannel do
   use MemoryWeb, :channel
 
   alias Memory.State
-  use GenServer
+  alias Memory.GameServer
 
 
   def join("games:" <> game, payload, socket) do
@@ -15,11 +15,6 @@ defmodule MemoryWeb.GamesChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
