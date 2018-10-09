@@ -46,8 +46,6 @@ defmodule Memory.State do
         updateBoard = game.board;
         updatedScore = game.score + 1;
 
-        Map.put(game, :score, updatedScore);
-        
         cardSelected = Enum.at(updateBoard, cardIndex);
 
         selected = Enum.filter(game.board, fn card ->
@@ -60,7 +58,6 @@ defmodule Memory.State do
         if (length(selected) < 2) do 
             newBoard = Enum.map(updateBoard, fn (card) ->
                 if(card.cardID == cardIndex) do
-                   #Map.put(card, :selected, true)
                    %{card | selected: true}
                 else 
                     card
@@ -68,25 +65,6 @@ defmodule Memory.State do
             end)
             Map.put(game, :board, newBoard)
         end
-    
-
-        # if (length(flippedList) == 2) do
-        #     cardOne = Enum.at(flippedList, 0);
-        #     cardTwo = Enum.at(flippedList, 1);
-        
-        #     if (cardOne.value == cardTwo.value && !cardOne.matched && !cardTwo.matched) do
-        #         cardOne = %{cardOne | selected: false, matched: true}
-        #         cardTwo = %{cardTwo | selected: false, matched: true}
-            
-        #     else
-        #         Process.sleep(5000);
-        #         cardOne = %{cardOne | selected: false, matched: false}
-        #         cardTwo = %{cardTwo | selected: false, matched: false}
-                
-        #     end
-        #     Map.put(game, :board, updateBoard)
-        # end
-        
     end
 
 end
