@@ -58,15 +58,17 @@ defmodule Memory.State do
         # before I get the rest of the logic to work
         # I am just trying to get some response from my front end
         if (length(selected) < 2) do 
-            Enum.map(updateBoard, fn (card) ->
+            newBoard = Enum.map(updateBoard, fn (card) ->
                 if(card.cardID == cardIndex) do
                    #Map.put(card, :selected, true)
-                   card = %{card | selected: true}
+                   %{card | selected: true}
+                else 
+                    card
                 end
             end)
-            Map.put(game, :board, updateBoard)
+            Map.put(game, :board, newBoard)
         end
-        end
+    
 
         # if (length(flippedList) == 2) do
         #     cardOne = Enum.at(flippedList, 0);
