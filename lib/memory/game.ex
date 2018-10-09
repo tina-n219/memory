@@ -45,7 +45,7 @@ defmodule Memory.Game do
             gametemp = Map.put(game, :clickCount, newClickCount)
             newCards = Enum.map(newBoard, fn(card) ->
             if (card.index == cardIndex) do
-                card_flipped(card)
+                %{card | flipped: true}
             else
                 card
             end
