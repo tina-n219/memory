@@ -6,12 +6,11 @@ defmodule MemoryWeb.GamesChannel do
 
   def join("games:" <> name, payload, socket) do
     if authorized?(payload) do
-      game = BackupAgent.get(name) || State.new()
+      game = Game.new()
       socket = socket
       |> assign(:game, game)
       |> assign(:name, name)
-      BackupAgent.put(name, game)
-      {:ok, %{"join" => name, "game" => State.client_view(game)}, socket}
+      {:ok, %{"join" => name, "game" => Game.client_view(game)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -26,11 +25,9 @@ defmodule MemoryWeb.GamesChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
   def handle_in("selectCard", %{"index" => ii}, socket) do
-    name = socket.assigns[:name]
-    game = State.guess(socket.assigns[:game], ii)
+    game = Game.guess(socket.assigns[:game], ii)
     socket = assign(socket, :game, game)
-    BackupAgent.put(name, game)
-    {:reply, {:ok, %{"game" => State.client_view(game)}}, socket}
+    {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
   end
 
   def handle_in("restart", payload, socket) do
