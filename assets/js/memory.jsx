@@ -21,11 +21,20 @@ export default function game_init(root, channel) {
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
                     .receive("error", resp => { console.log("Unable to join", resp) });
-        
+            
+            this.channel.on("selectCard", state => {
+                this.setState({state})
+            })
+            this.channel.on("restart", state => {
+                this.setState({state});
+            })
+            this.channel.on("view", state => {
+                this.setState({state});
+            })
+
     };
 
     gotView(view) {
-        console.log(view.game)
         this.setState(view.game);
       }
 
@@ -34,14 +43,12 @@ export default function game_init(root, channel) {
             return;
           }
           else {
-            this.channel.push("selectCard", { index: cardID })
-            .receive("ok", this.gotView.bind(this));
+            this.channel.push("selectCard", { index: cardID });
           }
       }
 
       restart() {
-          this.channel.push("restart")
-          .receive("ok", this.gotView.bind(this));
+          this.channel.push("restart");
       }
 
       render() {

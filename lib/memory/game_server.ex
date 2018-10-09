@@ -1,6 +1,6 @@
 # Code credit to Nat Tuck
 # https://github.com/NatTuck/hangman/blob/multiplayer/lib/hangman/game_server.ex
-defmodule Hangman.GameServer do
+defmodule Memory.GameServer do
   use GenServer
 
   alias Memory.State
@@ -14,8 +14,12 @@ defmodule Hangman.GameServer do
     GenServer.call(__MODULE__, {:view, game, user})
   end
 
-  def guess(game, user, letter) do
-    GenServer.call(__MODULE__, {:guess, game, user, letter})
+  def guess(game, user, cardIndex) do
+    GenServer.call(__MODULE__, {:guess, game, user, cardIndex})
+  end
+  
+  def restart(game, user) do
+    GenServer.call(__MODULE__, {:restart, user})
   end
 
   ## Implementations
@@ -28,9 +32,9 @@ defmodule Hangman.GameServer do
     {:reply, State.client_view(gg, user), Map.put(state, game, gg)}
   end
 
-  def handle_call({:guess, game, user, letter}, _from, state) do
+  def handle_call({:guess, game, user, cardIndex}, _from, state) do
     gg = Map.get(state, game, State.new)
-    |> State.guess(user, letter)
+    |> State.guess(user, cardIndex)
     vv = State.client_view(gg, user)
     {:reply, vv, Map.put(state, game, gg)}
   end
