@@ -1,4 +1,6 @@
 defmodule MemoryWeb.GamesChannel do
+  use MemoryWeb, :channel
+
   alias Memory.State
   use GenServer
 
@@ -11,6 +13,7 @@ defmodule MemoryWeb.GamesChannel do
     else
       {:error, %{reason: "unauthorized"}}
     end
+  end
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
@@ -36,4 +39,5 @@ defmodule MemoryWeb.GamesChannel do
   defp authorized?(_payload) do
     true
   end
+
 end
