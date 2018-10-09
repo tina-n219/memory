@@ -1,8 +1,6 @@
 defmodule MemoryWeb.GamesChannel do
-  use MemoryWeb, :channel
-
   alias Memory.State
-  alias Memory.BackupAgent
+  use GenServer
 
   def join("games:" <> name, payload, socket) do
     if authorized?(payload) do
