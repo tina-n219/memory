@@ -40,7 +40,10 @@ defmodule Memory.State do
 
     def client_view(game, user) do 
         if(game.players.length < 2) do
-
+            %{
+                skel: [], 
+                score: 0
+            }
         end
         if (game.players.length == 2) do
         %{

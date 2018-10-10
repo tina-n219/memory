@@ -13,7 +13,8 @@ export default function game_init(root, channel) {
         this.channel = props.channel;
         this.state = { 
             skel: [], 
-            score: 0}; 
+            score: 0,
+            players: []}; 
     
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
