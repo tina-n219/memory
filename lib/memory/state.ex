@@ -25,6 +25,13 @@ defmodule Memory.State do
         
     end
 
+    def default_player() do
+        %{
+          score: 0,
+          matchedPairs: []
+        }
+      end
+
     def client_view(game) do 
         %{
             skel: game.board, 
