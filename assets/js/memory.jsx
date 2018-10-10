@@ -14,10 +14,7 @@ export default function game_init(root, channel) {
         this.state = { 
             skel: [], 
             score: 0}; 
-
-        
-        // {"ok", view}
-        // {:ok, %{"game" => State.client_view(game)}}
+    
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
                     .receive("error", resp => { console.log("Unable to join", resp) });
@@ -35,6 +32,7 @@ export default function game_init(root, channel) {
     };
 
     gotView(view) {
+        console.log("got view");
         this.setState(view.game);
       }
 

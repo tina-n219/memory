@@ -4,17 +4,16 @@ defmodule MemoryWeb.GamesChannel do
   alias Memory.State
   alias Memory.GameServer
 
-
   def join("games:" <> game, payload, socket) do
     if authorized?(payload) do
       socket = assign(socket, :game, game)
       view = GameServer.view(game, socket.assigns[:user])
+      IO.puts "yo wtf"
       {:ok, %{"join" => game, "game" => view}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
-
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (games:lobby).
