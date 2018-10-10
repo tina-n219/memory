@@ -8,20 +8,20 @@ defmodule Memory.State do
         }
     end
 
-    def new(players) do
-        players = Enum.map players, fn {name} ->
-          {name, %{ default_player()}}
-        end
-        Map.put(new(), :players, Enum.into(players, %{}))
-    end
+    # def new(players) do
+    #     players = Enum.map players, fn {name} ->
+    #       {name, %{ default_player()}}
+    #     end
+    #     Map.put(new(), :players, Enum.into(players, %{}))
+    # end
 
-    def default_player() do
-        %{
-          matches: MapSet.new(),
-          turn: false,
-          observer: false
-        }
-    end
+    # def default_player() do
+    #     %{
+    #       matches: MapSet.new(),
+    #       turn: false,
+    #       observer: false
+    #     }
+    # end
 
     def gen_board() do
         ughAHH = "aabbccddeeffgghh"
@@ -41,22 +41,10 @@ defmodule Memory.State do
     end
 
     def client_view(game, user) do 
-        if(game.players.length < 2) do
-            %{
-                skel: [], 
-                score: 0
-            }
-        end
-        if (game.players.length == 2) do
         %{
             skel: game.board, 
             score: 0
         }
-    
-        else 
-            #make observers
-        end
-
     end
 
     # def skeleton(cardList) do

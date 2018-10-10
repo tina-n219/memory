@@ -6,10 +6,18 @@ defmodule MemoryWeb.GamesChannel do
 
   def join("games:" <> game, payload, socket) do
     if authorized?(payload) do
+      # Add user to players
+      # If there are two players in the room, start the game
       socket = assign(socket, :game, game)
       view = GameServer.view(game, socket.assigns[:user])
-      IO.puts "yo wtf"
+      username = socket.assigns[:user]
+      IO.inspect(username)
+      #newPlayers = game.players ++ username
+      newPlayers = []
+      Map.put(game, :players, newPlayers)
+      if (length(game.players) == 2) do
       {:ok, %{"join" => game, "game" => view}, socket}
+      end
     else
       {:error, %{reason: "unauthorized"}}
     end
