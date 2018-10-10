@@ -40,7 +40,7 @@ defmodule Memory.State do
     #             "-?-"
     #         end
     #     end 
-    # end
+    # end n
 
     def guess(game, cardIndex) do
         updateBoard = game.board;
