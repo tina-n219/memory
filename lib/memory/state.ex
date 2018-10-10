@@ -3,7 +3,8 @@ defmodule Memory.State do
     def new() do 
         %{
             board: gen_board(),
-            score: 0
+            score: 0,
+            players: %{}
         }
     end
 

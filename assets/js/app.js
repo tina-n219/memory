@@ -12,7 +12,7 @@ import "phoenix_html";
 import $ from 'jquery';
 
 // Import local files
-//
+//  
 // Local files can be imported directly using relative paths, for example:
 import socket from "./socket";
 import game_init from "./memory";
