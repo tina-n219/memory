@@ -24,6 +24,12 @@ defmodule MemoryWeb.GamesChannel do
     {:reply, {:ok, %{ "game" => view}}, socket}
   end
 
+  def handle_in("reset", payload, socket) do
+    view = GameServer.reset(socket.assigns[:game], socket.assigns[:user])
+    broadcast(socket, "reset", view)
+    {:reply, {:ok, %{ "game" => view}}, socket}
+  end
+
   # def handle_in("restart", payload, socket) do
   #   game = State.new()
   #   socket = assign(socket, :game, game)

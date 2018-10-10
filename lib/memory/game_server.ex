@@ -38,4 +38,10 @@ defmodule Memory.GameServer do
     vv = State.client_view(gg, user)
     {:reply, vv, Map.put(state, game, gg)}
   end
+
+  def handle_call({:reset, game, user}, _from, state) do
+   # gg = Map.get(state, game, State.new)
+    gg = State.new();
+    {:reply, State.client_view(gg, user), Map.put(state, game, gg)}
+  end
 end
