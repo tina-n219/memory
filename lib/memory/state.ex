@@ -3,8 +3,7 @@ defmodule Memory.State do
     def new() do 
         %{
             board: gen_board(),
-            score: 0,
-            players: %{}
+            score: 0
         }
     end
 
@@ -26,14 +25,7 @@ defmodule Memory.State do
         
     end
 
-    def default_player() do
-        %{
-          score: 0,
-          matchedPairs: []
-        }
-      end
-
-    def client_view(game) do 
+    def client_view(game, user) do 
         %{
             skel: game.board, 
             score: 0
