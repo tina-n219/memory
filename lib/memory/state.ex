@@ -25,7 +25,7 @@ defmodule Memory.State do
         
     end
 
-    def client_view(game) do 
+    def client_view(game, user) do 
         %{
             skel: game.board, 
             score: 0
