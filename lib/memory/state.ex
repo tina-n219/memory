@@ -3,12 +3,25 @@ defmodule Memory.State do
     def new() do 
         %{
             board: gen_board(),
-            score: 0
+            score: 0,
+            players: []
+        }
+    end
+
+    def new(players) do
+        players = Enum.map players, fn {name, info} ->
+          {name, %{ default_player() | score: info.score || 0 }}
+        end
+        Map.put(new(), :players, Enum.into(players, %{}))
+    end
+
+    def default_player() do
+        %{
+          matches: MapSet.new()
         }
     end
 
     def gen_board() do
-        whydontyouwork = ["a", "a", "b", "b", "c", "c", "d", "d", "e", "e", "f", "f", "g", "g", "h", "h"];
         ughAHH = "aabbccddeeffgghh"
         ughAHH
         |> String.graphemes()
@@ -26,10 +39,19 @@ defmodule Memory.State do
     end
 
     def client_view(game, user) do 
+        if(game.players.length < 2) do
+
+        end
+        if (game.players.length == 2) do
         %{
             skel: game.board, 
             score: 0
         }
+    
+        else 
+            #make observers
+        end
+
     end
 
     # def skeleton(cardList) do
