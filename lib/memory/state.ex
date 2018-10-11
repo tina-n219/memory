@@ -4,20 +4,26 @@ defmodule Memory.State do
         %{
             board: gen_board(),
             score: 0,
-            players: %{}
+            players: gen_players()
         }
     end
 
     def joinGame(game, user) do
-        # check if user is in the game
-        # if not, add them to currentPlayers
-        #currentPlayers = [Map.put_new(game.players, :user, default_player())]
-        currentPlayers = []
-        if(Kernel.length(game.players) < 2) do
-        Map.put(game, :players, Map.put(..., user, default_player()))
-        else 
+        # check if user is not in the game and there is space for them
+        # if there is, add them to this game's players
+        IO.puts"The user is trying to join the game"
+        currentPlayers = length(Map.values(game.players))    
+        IO.inspect(currentPlayers)    
+        if (game.players[user] == nil and currentPlayers < 2) do
+            newPlayers = Map.put(game.players, user, default_player)
+            Map.put(game, :players, newPlayers)
+        else
             game
         end
+    end
+
+    def gen_players() do
+        %{}
     end
 
     def default_player() do
@@ -50,6 +56,7 @@ defmodule Memory.State do
             skel: game.board, 
             score: 0
         }
+
     end
 
     # def skeleton(cardList) do

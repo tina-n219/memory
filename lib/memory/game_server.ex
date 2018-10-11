@@ -7,17 +7,17 @@ defmodule Memory.GameServer do
 
   ## Client Interface
   def start_link(_args) do
-    IO.puts "Link Started"
+   # IO.puts "Link Started"
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
   end
 
   def view(game, user) do
-    IO.puts "View Requested"
-
+   # IO.puts "View Requested"
     GenServer.call(__MODULE__, {:view, game, user})
   end
 
   def join_game(game, user) do
+    IO.puts"Gen Server joining game"
     GenServer.call(__MODULE__, {:joinGame, game, user})
   end
 
@@ -32,18 +32,18 @@ defmodule Memory.GameServer do
 
   ## Implementations
   def init(state) do
-    IO.puts "State loop initialized"
+   # IO.puts "State loop initialized"
     {:ok, state}
   end
 
   def handle_call({:view, game, user}, _from, state) do
-    IO.puts "View Request made it to client"
-
+   # IO.puts "View Request made it to client"
     gg = Map.get(state, game, State.new)
     {:reply, State.client_view(gg, user), Map.put(state, game, gg)}
   end
 
   def handle_call({:joinGame, game, user}, _from, state) do
+    IO.puts "join Game in Gen Server!"
     # State.join game
     gg = Map.get(state, game, State.new)
     |> State.joinGame(user)

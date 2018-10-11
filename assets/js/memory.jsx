@@ -17,6 +17,7 @@ export default function game_init(root, channel) {
             players: [],
             gameOver: false}; 
     
+        console.log("The first thing we do")
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
                     .receive("error", resp => { console.log("Unable to join", resp) });
@@ -28,6 +29,9 @@ export default function game_init(root, channel) {
                 this.setState({state});
             })
             this.channel.on("view", state => {
+                this.setState({state});
+            })
+            this.channel.on("join_game", state => {
                 this.setState({state});
             })
 
@@ -52,12 +56,14 @@ export default function game_init(root, channel) {
       }
 
       render() {
-          let board = null;
-          console.log(this.state.players);
+          
+        console.log("Render function");
+          let gameBoard = null;
 
         // Are there more than 2 players in the game?
-        if (this.state.players.length < 2) {
+        if (this.state.players.length < 2 || this.state.players.length == null) {
             // there are not, so go to lobby
+            console.log("About to enterLobby");
             return this.enterLobby();
         }
         else if (this.state.gameOver) {
@@ -66,13 +72,12 @@ export default function game_init(root, channel) {
         else {
             // there are two players, you can now join
             // as an observer
-            console.log(this.state.score)
-            board = _.map(this.state.skel, (card, i) => {
+            gameBoard = _.map(this.state.skel, (card, i) => {
                 return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
             });
         }
         return <div className="column-pairs">
-        {board}
+        {gameBoard}
         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
         Score: {this.state.score}
         </div>
@@ -81,19 +86,22 @@ export default function game_init(root, channel) {
       enterLobby() {  
         // Has a player joined already?
         let waitingView = <p>test</p>;
-        if (this.state.players.length == 1) {
-            console.log("Only one player")
-            // As a single player, you need to wait for another
-            // player to join the game
-            waitingView = 
-            <div className="column">
-            <h2> Username: {window.name}</h2>
-            <h2> you been lobbied </h2>
-            </div>
-        }
+        console.log("Just entered lobby");
+        console.log(this.state.players.length);
+
+        // if (this.state.players.length == 1) {
+        //     console.log("Only one player")
+        //     // As a single player, you need to wait for another
+        //     // player to join the game
+        //     waitingView = 
+        //     <div className="column">
+        //     <h2> Username: {window.name}</h2>
+        //     <h2> you been lobbied </h2>
+        //     </div>
+        // }
         return (
         <div className="row">
-        {waitingView}
+        {/* {waitingView} */}
         
         <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
         </div>
