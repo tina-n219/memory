@@ -43,7 +43,6 @@ defmodule Memory.GameServer do
   end
 
   def handle_call({:joinGame, game, user}, _from, state) do
-    IO.puts "join Game in Gen Server!"
     # State.join game
     gg = Map.get(state, game, State.new)
     |> State.joinGame(user)

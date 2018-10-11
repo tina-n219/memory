@@ -59,11 +59,11 @@ export default function game_init(root, channel) {
           
         console.log("Render function");
           let gameBoard = null;
-
         // Are there more than 2 players in the game?
-        if (this.state.players.length < 2 || this.state.players.length == null) {
+        if (this.state.players.length < 2) {
+            console.log("ENTERLOBBYYY");
+
             // there are not, so go to lobby
-            console.log("About to enterLobby");
             return this.enterLobby();
         }
         else if (this.state.gameOver) {
@@ -86,22 +86,21 @@ export default function game_init(root, channel) {
       enterLobby() {  
         // Has a player joined already?
         let waitingView = <p>test</p>;
-        console.log("Just entered lobby");
-        console.log(this.state.players.length);
-
-        // if (this.state.players.length == 1) {
-        //     console.log("Only one player")
-        //     // As a single player, you need to wait for another
-        //     // player to join the game
-        //     waitingView = 
-        //     <div className="column">
-        //     <h2> Username: {window.name}</h2>
-        //     <h2> you been lobbied </h2>
-        //     </div>
-        // }
+        let allPlayers = this.state.players;
+        
+        if (this.state.players.length ==  null) {
+            console.log("Only one player")
+            // As a single player, you need to wait for another
+            // player to join the game
+            waitingView = 
+            <div className="column">
+            <h2> Username: {window.name}</h2>
+            <h2> you been lobbied </h2>
+            </div>
+        }
         return (
         <div className="row">
-        {/* {waitingView} */}
+        {waitingView}
         
         <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
         </div>

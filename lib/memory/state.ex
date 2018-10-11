@@ -4,7 +4,7 @@ defmodule Memory.State do
         %{
             board: gen_board(),
             score: 0,
-            players: gen_players()
+            players: []
         }
     end
 
@@ -12,22 +12,28 @@ defmodule Memory.State do
         # check if user is not in the game and there is space for them
         # if there is, add them to this game's players
         IO.puts"The user is trying to join the game"
-        currentPlayers = length(Map.values(game.players))    
+        currentPlayers = length(game.players)   
         IO.inspect(currentPlayers)    
-        if (game.players[user] == nil and currentPlayers < 2) do
-            newPlayers = Map.put(game.players, user, default_player)
+        if (Enum.member?(game.players, user) == nil and currentPlayers < 2) do
+            newPlayers = (game.players ++ [user, default_player])
+            # newPlayers = Map.put(game.players, user, default_player)
+            # playersAsList = Map.to_list(newPlayers)
+            IO.inspect(newPlayers)
+            IO.puts "Check above for player list"
             Map.put(game, :players, newPlayers)
         else
             game
         end
     end
 
-    def gen_players() do
-        %{}
-    end
+    # def gen_players() do
+    #     %{
+    #         :nattuck => "1"
+    #     }
+    # end
 
     def default_player() do
-        %{
+        player = %{
           turn: false,
           score: 0
         }
@@ -52,9 +58,9 @@ defmodule Memory.State do
 
     def client_view(game, user) do 
         %{
-            players: game.players,
             skel: game.board, 
-            score: 0
+            score: 0,
+            players: game.players
         }
 
     end
