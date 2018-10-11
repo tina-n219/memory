@@ -21,16 +21,17 @@ class Board extends React.Component {
             .receive("ok", this.gotView.bind(this))
             .receive("error", resp => { console.log("Unable to join", resp) });
         this.channel.on("selectCard", state => {
-            this.setState({ state })
+            console.log(state)
+            this.setState(state)
         })
         this.channel.on("restart", state => {
-            this.setState({ state });
+            this.setState(state);
         })
         this.channel.on("view", state => {
-            this.setState({ state });
+            this.setState(state);
         })
         this.channel.on("join_game", state => {
-            this.setState({ state });
+            this.setState(state);
         })
     };
 
