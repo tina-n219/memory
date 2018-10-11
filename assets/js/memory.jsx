@@ -51,14 +51,12 @@ class Board extends React.Component {
         // Are there more than 2 players in the game?
         console.log(this.state.players.length);
         let gameBoard = null;
-        if (this.state.players.length < 2) {
-
-
+        if (this.gameOver()) {
+            return <h1>you just coded for 15 + hrs to get this to appear</h1>
+        }
+        else if (this.state.players.length < 2) {
             // there are not, so go to lobby
             return this.enterLobby();
-        }
-        else if (this.gameOver()) {
-            return <p> you won </p>
         }
         else {
             // there are two players, you can now join
@@ -87,18 +85,11 @@ class Board extends React.Component {
     // }
 
     enterLobby() {
-        // Has a player joined already?
-        if (this.state.players.length == null) {
-            // As a single player, you need to wait for another
-            // player to join the game
-            waitingView =
-                <div className="column">
-                    <h2> Username: {window.name}</h2>
-                    <h2> you been lobbied </h2>
-                </div>
-        }
+       
         return (
-            <div className="row">
+            <div className="column">
+                <h2> you been lobbied</h2> 
+                <p>waiting for another player</p>
                 <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
             </div>
         )
@@ -106,7 +97,11 @@ class Board extends React.Component {
 
     gameOver() {
         let matchedCards = _.filter(this.state.skel, 'matched');
-        return matchedCards.length == this.state.skel.length;
+        if( matchedCards.length == this.state.skel.length) {
+            this.state.gameOver = true;
+        }
+
+        return matchedCards.length == this.state.skel.length && this.state.gameOver;
     }
 }
 
