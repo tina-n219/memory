@@ -46,6 +46,7 @@ defmodule Memory.GameServer do
   def handle_call({:joinGame, game, user}, _from, state) do
     # State.join game
     gg = Map.get(state, game, State.new)
+    gg.join(game, user);
   end
 
   def handle_call({:guess, game, user, cardIndex}, _from, state) do

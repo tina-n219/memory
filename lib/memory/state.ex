@@ -8,8 +8,16 @@ defmodule Memory.State do
         }
     end
 
-    def joinGame() do
+    def joinGame(game, user) do
+        # if the user is in the game.players add to game, 
+        # else leave game unchanges, aka they observers
+        currentPlayers = game.players.values
+
+        if (Enum.member?(currentPlayers, user)) do
         
+        end
+
+
     end
 
     def default_player() do
