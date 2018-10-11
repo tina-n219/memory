@@ -74,8 +74,10 @@ defmodule Memory.State do
     # end n
 
     def guess(game, cardIndex) do
+        
         updateBoard = game.board;
         updatedScore = game.score + 1;
+        Map.put(game, :score, updatedScore);
 
         cardSelected = Enum.at(updateBoard, cardIndex);
 

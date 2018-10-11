@@ -31,7 +31,7 @@ defmodule MemoryWeb.GamesChannel do
   def handle_in("join_game", payload, socket) do
     IO.puts"Games Channel join_Game"
     view = GameServer.join_game(socket.assigns[:game], socket.assigns[:user])
-    broadcast(socket, "join_game", view)
+    broadcast(socket, "view", view)
     {:reply, {:ok, %{ "game" => view}}, socket}
   end
   # def handle_in("restart", payload, socket) do
