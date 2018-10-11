@@ -13,7 +13,7 @@ class Board extends React.Component {
         this.channel = props.channel;
         this.state = {
             skel: [],
-            score: 0,
+            clickCount: 0,
             players: [],
             gameOver: false
         };
@@ -24,7 +24,7 @@ class Board extends React.Component {
             console.log(state)
             this.setState(state)
         })
-        this.channel.on("restart", state => {
+        this.channel.on("update", state => {
             this.setState(state);
         })
         this.channel.on("view", state => {
@@ -79,7 +79,7 @@ class Board extends React.Component {
         return (<div className="column-pairs">
         {gameBoard}
         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
-        Score: {this.state.score}
+        Click count: {this.state.clickCount}
         </div>);        }
     }
 
@@ -90,7 +90,7 @@ class Board extends React.Component {
     //     return <div className="column-pairs">
     //         {gameBoard}
     //         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
-    //         Score: {this.state.score}
+    //         clickCount: {this.state.clickCount}
     //     </div>
     // }
 
