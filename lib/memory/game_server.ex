@@ -55,7 +55,7 @@ defmodule Memory.GameServer do
     IO.inspect({result, gg})
     case result do
       :incorrectguess -> Process.send_after(self(), {:finish_unsuccessful, game}, 2 * 1000)
-      :correctguess -> gg = State.finish_succesful(gg, user)
+      :correctguess -> gg = State.finish_succesful(gg)
       _ -> game
     end
     vv = State.client_view(gg, user)
@@ -65,8 +65,8 @@ defmodule Memory.GameServer do
   def handle_info({:finish_unsuccessful, name}, state) do
     IO.puts"Gen Server doing some handling of information"
     game = Map.get(state, name)
-    game = State.finish_unsuccesful(game)
-    MemoryWeb.Endpoint.broadcast!("game:#{name}", "update", State.client_view(game))
+    game = State.finish_unsuccessful(game)
+    MemoryWeb.Endpoint.broadcast!("game:#{name}", "update", State.client_view(game, name))
     {:noreply, Map.put(state, name, game)}
   end
 

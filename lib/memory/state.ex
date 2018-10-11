@@ -82,10 +82,9 @@ defmodule Memory.State do
 
      def guess(game, user, cardIndex) do
         # Is it this user's turn?
+        IO.inspect(game.board)
         selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
         if (user == game.lastPlayer || length(selectedCards) >= 2) do
-            IO.inspect(user)
-            IO.inspect(selectedCards)
             {:invalid, game}
         else
             # If it's a valid click, allow it
@@ -123,8 +122,6 @@ defmodule Memory.State do
         if (numSelected < 2) do
             {:firstguess, newBoard}
         else 
-            IO.inspect(newBoard)
-            IO.inspect(selectedCards)
             if (checkMatch(newBoard, selectedCards)) do 
                 IO.puts"This was an succesful try, time to tell the server"
                 {:correctguess, newBoard}
@@ -138,9 +135,8 @@ defmodule Memory.State do
 
     def finish_succesful(game) do
         # change the score 
-
         # get the non last player
-        user = "catu"
+        user = getNoneLast(game)
 
         newPlayers = Enum.map(game.players, fn (player) ->
             if (player.username == user) do
@@ -154,7 +150,7 @@ defmodule Memory.State do
         cardOne = Enum.at(selectedCards, 0)
         cardTwo = Enum.at(selectedCards, 1)
         matchCardOne = Enum.map(updatedScore.board, fn (card) -> 
-            if(card.value == cardOne) do 
+            if(card.value == cardOne.value) do 
                 %{card | matched: true}
                 %{card | selected: false}
             else 
@@ -164,7 +160,7 @@ defmodule Memory.State do
         matchBoard = Map.put(updatedScore, :board, matchCardOne)
 
         matchCardTwo = Enum.map(matchBoard, fn (card) -> 
-            if(card.value == cardTwo) do
+            if(card.value == cardTwo.value) do
                     %{card | matched: true}
                     %{card | selected: false}
                 else 
@@ -177,34 +173,44 @@ defmodule Memory.State do
         Map.put(matchBoardLast, :lastPlayer, user)
     end
 
-    def finish_unsuccesful(game) do
-        IO.puts"This was an unsuccesful try and the state"
-        selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
-        cardOne = selectedCards[0]
-        cardTwo = selectedCards[1]
-              # unselect cards
-              matchCardOne = Enum.map(game.board, fn (card) -> 
-                if(card.value == cardOne) do 
+    def finish_unsuccessful(game) do
+        IO.puts"========= GAME BOARD PASSED TO UNSUCCESFUL"
+        IO.inspect(game.board)
+        IO.puts"State finishing unsuccesfully"
+            unselectCards = Enum.map(game.board, fn (card) -> 
+                if (card.selected) do
                     %{card | selected: false}
-                else 
+                else
                     card
                 end
             end)
-            matchBoard = Map.put(game, :board, matchCardOne)
-    
-            matchCardTwo = Enum.map(matchBoard, fn (card) -> 
-                if(card.value == cardTwo) do
-                        %{card | selected: false}
-                    else 
-                           card
-                        end
-                   end)
-            matchBoardLast = Map.put(matchBoard, :board, matchCardTwo)
-    
+            matchBoardLast = Map.put(game, :board, unselectCards)
+            IO.inspect(matchBoardLast)
             # change the turn 
-            user = "catu"
+            newLastUser = getNoneLast(matchBoardLast)
+            Map.put(matchBoardLast, :lastPlayer, newLastUser)
+     end
 
-            Map.put(matchBoardLast, :lastPlayer, user)
+     def getNoneLast(game) do
+        newplayer = nil
+        currentLast = game.lastPlayer
+        all = game.players
+        player1 = Enum.at(all, 0)
+        player2 = Enum.at(all, 1)
+        if (player1.username == currentLast) do
+            newplayer = player2.username
+        end
+        if (player2.username == currentLast) do
+            newplayer = player1.username
+        end
+        #  onePlayer = Enum.map(game.players, fn (player) -> 
+        #     if (currentLast.username != player.username) do
+        #         player
+        #     end
+        # end)
+        #newPlayer = Enum.at(onePlayer, 0)
+        Map.put(game, :lastPlayer, newplayer)
+
      end
 
     # Check if the cards selected are a match
@@ -215,49 +221,5 @@ defmodule Memory.State do
         cardTwo = Enum.at(selectedCards, 1)
         cardOne.value == cardTwo.value and cardOne.cardID != cardTwo.cardID
     end
-        # result = false
-
-        # if (cardOne == cardTwo) do
-        #     # The cards are equal so set as match
-        #     matchOne = Enum.map(newBoard, fn (card) -> 
-        #         if(card.value == cardOne) do
-        #             %{card | matched: true}
-        #             %{card | selected: false}
-        #            else 
-        #                card
-        #            end
-        #        end)
-        #        matchBoard = Map.put(newBoard, :board, matchOne)
-
-        #        matchTwo = Enum.map(matchBoard, fn (card) -> 
-        #         if(card.value == cardTwo) do
-        #             %{card | matched: true}
-        #             %{card | selected: false}
-        #         else 
-        #                card
-        #             end
-        #        end)
-        #        Map.put(newBoard, :board, matchTwo)
-        #     else 
-        #         # The cards are not equal so flip back
-        #         matchOne = Enum.map(newBoard, fn (card) -> 
-        #             if(card.value == cardOne) do
-        #                 %{card | selected: false}
-        #                else 
-        #                    card
-        #                end
-        #            end)
-        #            matchBoard = Map.put(newBoard, :board, matchOne)
-    
-        #            matchTwo = Enum.map(matchBoard, fn (card) -> 
-        #             if(card.value == cardTwo) do
-        #                 %{card | selected: false}
-        #             else 
-        #                    card
-        #                 end
-        #            end)
-        #            Map.put(newBoard, :board, matchTwo)
-        #     end
-    #end
 
 end
