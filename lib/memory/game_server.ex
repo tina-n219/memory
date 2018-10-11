@@ -17,6 +17,10 @@ defmodule Memory.GameServer do
     GenServer.call(__MODULE__, {:view, game, user})
   end
 
+  def join_game(game, user) do
+    GenServer.call(__MODULE__, {:joinGame, game, user})
+  end
+
   def guess(game, user, cardIndex) do
 
     GenServer.call(__MODULE__, {:guess, game, user, cardIndex})
@@ -37,6 +41,10 @@ defmodule Memory.GameServer do
 
     gg = Map.get(state, game, State.new)
     {:reply, State.client_view(gg, user), Map.put(state, game, gg)}
+  end
+
+  def handle_call({:joinGame, game user}, _from, state) do
+    #State.join game
   end
 
   def handle_call({:guess, game, user, cardIndex}, _from, state) do

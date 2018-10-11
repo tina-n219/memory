@@ -78,10 +78,16 @@ export default function game_init(root, channel) {
       }
       
       enterLobby() {
-        
-        return <div className="column">
-        <button class="button" onClick={() => this.channel.push("join")}>Join Game</button>
-        </div>
+        if (this.state.players.length == 1) {
+            return <div className="column">
+            <h2> you been lobbied </h2>
+            <h2> chill, we are waiting for one more player </h2>
+            </div>
+        }
+        else {
+           return <button class="button" onClick={this.channel.push("join_game")}>Join The Game !!</button>
+        }
+       
       }
     }
 
