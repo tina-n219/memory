@@ -20,19 +20,11 @@ class Board extends React.Component {
         this.channel.join()
             .receive("ok", this.gotView.bind(this))
             .receive("error", resp => { console.log("Unable to join", resp) });
-        this.channel.on("selectCard", state => {
-            console.log(state)
-            this.setState(state)
-        })
+
         this.channel.on("update", state => {
             this.setState(state);
         })
-        this.channel.on("view", state => {
-            this.setState(state);
-        })
-        this.channel.on("join_game", state => {
-            this.setState(state);
-        })
+
     };
 
     gotView(view) {
@@ -65,7 +57,7 @@ class Board extends React.Component {
             // there are not, so go to lobby
             return this.enterLobby();
         }
-        else if (this.state.gameOver) {
+        else if (this.gameOver()) {
             return <p> you won </p>
         }
         else {
@@ -110,6 +102,11 @@ class Board extends React.Component {
                 <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
             </div>
         )
+    }
+
+    gameOver() {
+        let matchedCards = _.filter(this.state.skel, 'matched');
+        return matchedCards.length == this.state.skel.length;
     }
 }
 

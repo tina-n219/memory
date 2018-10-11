@@ -82,9 +82,10 @@ defmodule Memory.State do
 
      def guess(game, user, cardIndex) do
         # Is it this user's turn?
-        selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
+        selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true and card.matched != true end)
         IO.puts"======= CARDS SELECTED ATM"
-        IO.inspect(length(selectedCards))
+        IO.inspect(selectedCards)
+ 
         if (user == game.lastPlayer || length(selectedCards) >= 2) do
             {:invalid, game}
         else
@@ -100,10 +101,9 @@ defmodule Memory.State do
 
     # User valid click
      def allowClick(game, cardIndex) do
-        updateBoard = game.board
         updatedclickCount = game.clickCount + 1
-        Map.put(game, :clickCount, updatedclickCount)
-        newBoard = game
+        newBoard = Map.put(game, :clickCount, updatedclickCount)
+        
         # Get list of selected cards 
         allCards = newBoard.board
         oneFlipBoard = Enum.map(allCards, fn (card) -> 
@@ -113,21 +113,21 @@ defmodule Memory.State do
                 card
             end
         end)
-        newBoard = Map.put(game, :board, oneFlipBoard)
+        newBoard2 = Map.put(game, :board, oneFlipBoard)
 
-        selectedCards = Enum.filter(newBoard.board, fn(card) -> card.selected == true and card.matched != true end)
+        selectedCards = Enum.filter(newBoard2.board, fn(card) -> card.selected == true and card.matched != true end)
         numSelected = length(selectedCards)
         
         # Check if it's first or second card being selected
         if (numSelected < 2) do
-            {:firstguess, newBoard}
+            {:firstguess, newBoard2}
         else 
-            if (checkMatch(newBoard, selectedCards)) do 
+            if (checkMatch(newBoard2, selectedCards)) do 
                 IO.puts"This was an successful try, time to tell the server"
-                {:correctguess, newBoard}
+                {:correctguess, newBoard2}
             else
                 IO.puts"This was an unsuccessful try, time to tell the server"
-                {:incorrectguess, newBoard}
+                {:incorrectguess, newBoard2}
             end
         end
 
