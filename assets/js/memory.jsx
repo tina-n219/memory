@@ -17,7 +17,6 @@ export default function game_init(root, channel) {
             players: [],
             gameOver: false}; 
     
-        console.log("The first thing we do")
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
                     .receive("error", resp => { console.log("Unable to join", resp) });
@@ -56,12 +55,9 @@ export default function game_init(root, channel) {
       }
 
       render() {
-          
-        console.log("Render function");
           let gameBoard = null;
         // Are there more than 2 players in the game?
         if (this.state.players.length < 2) {
-            console.log("ENTERLOBBYYY");
 
             // there are not, so go to lobby
             return this.enterLobby();
@@ -87,9 +83,8 @@ export default function game_init(root, channel) {
         // Has a player joined already?
         let waitingView = <p>test</p>;
         let allPlayers = this.state.players;
-        
+
         if (this.state.players.length ==  null) {
-            console.log("Only one player")
             // As a single player, you need to wait for another
             // player to join the game
             waitingView = 
@@ -101,7 +96,6 @@ export default function game_init(root, channel) {
         return (
         <div className="row">
         {waitingView}
-        
         <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
         </div>
         )  

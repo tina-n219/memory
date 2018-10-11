@@ -11,15 +11,12 @@ defmodule Memory.State do
     def joinGame(game, user) do
         # check if user is not in the game and there is space for them
         # if there is, add them to this game's players
-        IO.puts"The user is trying to join the game"
-        currentPlayers = length(game.players)   
-        IO.inspect(currentPlayers)    
-        if (Enum.member?(game.players, user) == nil and currentPlayers < 2) do
-            newPlayers = (game.players ++ [user, default_player])
-            # newPlayers = Map.put(game.players, user, default_player)
-            # playersAsList = Map.to_list(newPlayers)
+        currentPlayers = length(game.players) 
+        IO.puts"joinGame"  
+        if (Enum.member?(game.players, user) == false and currentPlayers < 2) do
+            newPlayers = (game.players ++ [default_player(user)])
             IO.inspect(newPlayers)
-            IO.puts "Check above for player list"
+            IO.puts"Where them players at"
             Map.put(game, :players, newPlayers)
         else
             game
@@ -32,8 +29,9 @@ defmodule Memory.State do
     #     }
     # end
 
-    def default_player() do
+    def default_player(user) do
         player = %{
+          username: user,
           turn: false,
           score: 0
         }
