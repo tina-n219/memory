@@ -4,7 +4,8 @@ defmodule Memory.State do
         %{
             board: gen_board(),
             score: 0,
-            players: []
+            players: [],
+            lastPlayer: nil
         }
     end
 
@@ -12,12 +13,18 @@ defmodule Memory.State do
         # check if user is not in the game and there is space for them
         # if there is, add them to this game's players
         currentPlayers = length(game.players) 
-        IO.puts"joinGame"  
         if (Enum.member?(game.players, default_player(user)) == false and currentPlayers < 2) do
             newPlayers = (game.players ++ [default_player(user)])
-            IO.inspect(newPlayers)
-            IO.puts"Where them players at"
-            Map.put(game, :players, newPlayers)
+            newGame = Map.put(game, :players, newPlayers)
+
+            # If the list of players is at two, then add this user
+            # as the latest player 
+            if (length(newGame.players) == 2) do
+                IO.puts"get here"
+                Map.put(newGame, :lastPlayer, user)
+            else
+                newGame
+            end
         else
             game
         end
@@ -58,7 +65,8 @@ defmodule Memory.State do
         %{
             skel: game.board, 
             score: game.score,
-            players: game.players
+            players: game.players,
+            lastPlayer: game.lastPlayer
         }
 
     end
@@ -74,11 +82,13 @@ defmodule Memory.State do
     # end n
 
     def guess(game, user, cardIndex) do
-        
+
+
         updateBoard = game.board
         updatedScore = game.score + 1
-        IO.puts"uh"
         Map.put(game, :score, updatedScore)
+
+
 
         # cardSelected = Enum.at(updateBoard, cardIndex);
 
