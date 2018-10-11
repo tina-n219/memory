@@ -39,7 +39,7 @@ defmodule Memory.State do
         player = %{
           username: user,
           turn: false,
-          clickCount: 0
+          score: 0
         }
     end
 
@@ -81,10 +81,11 @@ defmodule Memory.State do
     # end n
 
      def guess(game, user, cardIndex) do
-        IO.puts"Are we allowing guessing? yea boi"
         # Is it this user's turn?
         selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
         if (user == game.lastPlayer || length(selectedCards) >= 2) do
+            IO.inspect(user)
+            IO.inspect(selectedCards)
             {:invalid, game}
         else
             # If it's a valid click, allow it
@@ -99,15 +100,13 @@ defmodule Memory.State do
 
     # User valid click
      def allowClick(game, cardIndex) do
+
         updateBoard = game.board
         updatedclickCount = game.clickCount + 1
         Map.put(game, :clickCount, updatedclickCount)
         newBoard = game
         # Get list of selected cards 
         allCards = newBoard.board
-        selectedCards = Enum.filter(allCards, fn(card) -> card.selected == true end)
-        numSelected = length(selectedCards)
-
         oneFlipBoard = Enum.map(allCards, fn (card) -> 
             if(card.cardID == cardIndex) do
                 %{card | selected: true}
@@ -116,14 +115,21 @@ defmodule Memory.State do
             end
         end)
         newBoard = Map.put(game, :board, oneFlipBoard)
+
+        selectedCards = Enum.filter(newBoard.board, fn(card) -> card.selected == true end)
+        numSelected = length(selectedCards)
         
         # Check if it's first or second card being selected
         if (numSelected < 2) do
             {:firstguess, newBoard}
         else 
+            IO.inspect(newBoard)
+            IO.inspect(selectedCards)
             if (checkMatch(newBoard, selectedCards)) do 
+                IO.puts"This was an succesful try, time to tell the server"
                 {:correctguess, newBoard}
             else
+                IO.puts"This was an unsuccesful try, time to tell the server"
                 {:incorrectguess, newBoard}
             end
         end
@@ -131,22 +137,82 @@ defmodule Memory.State do
     end
 
     def finish_succesful(game) do
-       # if they aren't a match
-       # change the score if they are 
-       # change the turn 
+        # change the score 
+
+        # get the non last player
+        user = "catu"
+
+        newPlayers = Enum.map(game.players, fn (player) ->
+            if (player.username == user) do
+                %{player | score: player.score + 1}
+            end
+        end)
+        updatedScore = Map.put(game, :players, newPlayers)
+
+        # match cards
+        selectedCards = Enum.filter(updatedScore.board, fn(card) -> card.selected == true end)
+        cardOne = Enum.at(selectedCards, 0)
+        cardTwo = Enum.at(selectedCards, 1)
+        matchCardOne = Enum.map(updatedScore.board, fn (card) -> 
+            if(card.value == cardOne) do 
+                %{card | matched: true}
+                %{card | selected: false}
+            else 
+                card
+            end
+        end)
+        matchBoard = Map.put(updatedScore, :board, matchCardOne)
+
+        matchCardTwo = Enum.map(matchBoard, fn (card) -> 
+            if(card.value == cardTwo) do
+                    %{card | matched: true}
+                    %{card | selected: false}
+                else 
+                       card
+                    end
+               end)
+        matchBoardLast = Map.put(matchBoard, :board, matchCardTwo)
+
+        # change the turn 
+        Map.put(matchBoardLast, :lastPlayer, user)
     end
 
     def finish_unsuccesful(game) do
-        # if they aren't a match
-        # change the turn 
+        IO.puts"This was an unsuccesful try and the state"
+        selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
+        cardOne = selectedCards[0]
+        cardTwo = selectedCards[1]
+              # unselect cards
+              matchCardOne = Enum.map(game.board, fn (card) -> 
+                if(card.value == cardOne) do 
+                    %{card | selected: false}
+                else 
+                    card
+                end
+            end)
+            matchBoard = Map.put(game, :board, matchCardOne)
+    
+            matchCardTwo = Enum.map(matchBoard, fn (card) -> 
+                if(card.value == cardTwo) do
+                        %{card | selected: false}
+                    else 
+                           card
+                        end
+                   end)
+            matchBoardLast = Map.put(matchBoard, :board, matchCardTwo)
+    
+            # change the turn 
+            user = "catu"
+
+            Map.put(matchBoardLast, :lastPlayer, user)
      end
 
     # Check if the cards selected are a match
     #  Return a boolean if they're matched
     def checkMatch(newBoard, selectedCards) do
         #make sure indecxs are not the same
-        cardOne = selectedCards[0]
-        cardTwo = selectedCards[1]
+        cardOne = Enum.at(selectedCards, 0)
+        cardTwo = Enum.at(selectedCards, 1)
         cardOne.value == cardTwo.value and cardOne.cardID != cardTwo.cardID
     end
         # result = false
