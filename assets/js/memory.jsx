@@ -85,7 +85,7 @@ export default function game_init(root, channel) {
             </div>
         }
         else {
-           return <button class="button" onClick={this.channel.push("join_game")}>Join The Game !!</button>
+           return <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
         }
        
       }

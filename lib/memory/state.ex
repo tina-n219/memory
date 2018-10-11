@@ -8,6 +8,10 @@ defmodule Memory.State do
         }
     end
 
+    def joinGame() do
+        
+    end
+
     def default_player() do
         %{
           turn: false,
