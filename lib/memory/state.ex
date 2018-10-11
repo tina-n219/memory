@@ -82,8 +82,9 @@ defmodule Memory.State do
 
      def guess(game, user, cardIndex) do
         # Is it this user's turn?
-        IO.inspect(game.board)
         selectedCards = Enum.filter(game.board, fn(card) -> card.selected == true end)
+        IO.puts"======= CARDS SELECTED ATM"
+        IO.inspect(length(selectedCards))
         if (user == game.lastPlayer || length(selectedCards) >= 2) do
             {:invalid, game}
         else
@@ -99,7 +100,6 @@ defmodule Memory.State do
 
     # User valid click
      def allowClick(game, cardIndex) do
-
         updateBoard = game.board
         updatedclickCount = game.clickCount + 1
         Map.put(game, :clickCount, updatedclickCount)
@@ -123,27 +123,28 @@ defmodule Memory.State do
             {:firstguess, newBoard}
         else 
             if (checkMatch(newBoard, selectedCards)) do 
-                IO.puts"This was an succesful try, time to tell the server"
+                IO.puts"This was an successful try, time to tell the server"
                 {:correctguess, newBoard}
             else
-                IO.puts"This was an unsuccesful try, time to tell the server"
+                IO.puts"This was an unsuccessful try, time to tell the server"
                 {:incorrectguess, newBoard}
             end
         end
 
     end
 
-    def finish_succesful(game) do
+    def finish_successful(game) do
         # change the score 
         # get the non last player
         user = getNoneLast(game)
+        newLastPlayer = Map.put(game, :lastPlayer, user)
 
-        newPlayers = Enum.map(game.players, fn (player) ->
+        newPlayers = Enum.map(newLastPlayer.players, fn (player) ->
             if (player.username == user) do
                 %{player | score: player.score + 1}
             end
         end)
-        updatedScore = Map.put(game, :players, newPlayers)
+        updatedScore = Map.put(newLastPlayer, :players, newPlayers)
 
         # match cards
         selectedCards = Enum.filter(updatedScore.board, fn(card) -> card.selected == true end)
@@ -151,32 +152,27 @@ defmodule Memory.State do
         cardTwo = Enum.at(selectedCards, 1)
         matchCardOne = Enum.map(updatedScore.board, fn (card) -> 
             if(card.value == cardOne.value) do 
-                %{card | matched: true}
-                %{card | selected: false}
+                %{card | selected: false, matched: true}
             else 
                 card
             end
         end)
         matchBoard = Map.put(updatedScore, :board, matchCardOne)
 
-        matchCardTwo = Enum.map(matchBoard, fn (card) -> 
+        matchCardTwo = Enum.map(matchBoard.board, fn (card) -> 
             if(card.value == cardTwo.value) do
-                    %{card | matched: true}
-                    %{card | selected: false}
+                    %{card | selected: false, matched: true}
                 else 
                        card
                     end
                end)
-        matchBoardLast = Map.put(matchBoard, :board, matchCardTwo)
-
-        # change the turn 
-        Map.put(matchBoardLast, :lastPlayer, user)
+        Map.put(matchBoard, :board, matchCardTwo)
     end
 
     def finish_unsuccessful(game) do
-        IO.puts"========= GAME BOARD PASSED TO UNSUCCESFUL"
-        IO.inspect(game.board)
-        IO.puts"State finishing unsuccesfully"
+        IO.puts"last player before changing"
+        dude = game.lastPlayer
+        IO.inspect(dude)
             unselectCards = Enum.map(game.board, fn (card) -> 
                 if (card.selected) do
                     %{card | selected: false}
@@ -185,9 +181,10 @@ defmodule Memory.State do
                 end
             end)
             matchBoardLast = Map.put(game, :board, unselectCards)
-            IO.inspect(matchBoardLast)
             # change the turn 
             newLastUser = getNoneLast(matchBoardLast)
+            IO.puts"new last player"
+            IO.inspect(newLastUser)
             Map.put(matchBoardLast, :lastPlayer, newLastUser)
      end
 

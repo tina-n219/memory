@@ -29,7 +29,6 @@ defmodule MemoryWeb.GamesChannel do
   end
 
   def handle_in("join_game", _, socket) do
-    IO.puts"Games Channel join_Game"
     view = GameServer.join_game(socket.assigns[:game], socket.assigns[:user])
     broadcast(socket, "update", view)
     #{:reply, {:ok, %{ "game" => view}}, socket}
