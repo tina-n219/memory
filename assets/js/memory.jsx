@@ -14,7 +14,8 @@ export default function game_init(root, channel) {
         this.state = { 
             skel: [], 
             score: 0,
-            players: []}; 
+            players: [],
+            gameOver: false}; 
     
         this.channel.join()
                     .receive("ok", this.gotView.bind(this))
@@ -51,10 +52,19 @@ export default function game_init(root, channel) {
       }
 
       render() {
-        console.log(this.state.score)
-        let board = _.map(this.state.skel, (card, i) => {
-            return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
-        });
+        if (this.state.players.length < 2) {
+            // go to lobby
+        }
+        else if (this.state.gameOver) {
+            // show win sreen
+        }
+        else {
+            // game is ongoing
+            console.log(this.state.score)
+            let board = _.map(this.state.skel, (card, i) => {
+                return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
+            });
+        }
 
         //console.log(this.state.skel)
         return <div className="column-pairs">

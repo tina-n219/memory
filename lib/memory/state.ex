@@ -8,20 +8,12 @@ defmodule Memory.State do
         }
     end
 
-    # def new(players) do
-    #     players = Enum.map players, fn {name} ->
-    #       {name, %{ default_player()}}
-    #     end
-    #     Map.put(new(), :players, Enum.into(players, %{}))
-    # end
-
-    # def default_player() do
-    #     %{
-    #       matches: MapSet.new(),
-    #       turn: false,
-    #       observer: false
-    #     }
-    # end
+    def default_player() do
+        %{
+          turn: false,
+          score: 0
+        }
+    end
 
     def gen_board() do
         ughAHH = "aabbccddeeffgghh"

@@ -11,16 +11,9 @@ defmodule MemoryWeb.GamesChannel do
       socket = assign(socket, :game, game)
       view = GameServer.view(game, socket.assigns[:user])
       username = socket.assigns[:user]
-      IO.inspect(username)
-      #newPlayers = game.players ++ username
-      newPlayers = []
-      Map.put(game, :players, newPlayers)
-      if (length(game.players) == 2) do
+
       {:ok, %{"join" => game, "game" => view}, socket}
-      end
-    else
       {:error, %{reason: "unauthorized"}}
-    end
   end
 
   # It is also common to receive messages from the client and
