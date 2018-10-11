@@ -56,7 +56,7 @@ export default function game_init(root, channel) {
           console.log(this.state.players.length)
         if (this.state.players.length < 2) {
             // go to lobby
-            return <h1>You been lobbied</h1>
+            return this.enterLobby();
         }
         else if (this.state.gameOver) {
             // show win sreen
@@ -69,12 +69,18 @@ export default function game_init(root, channel) {
                 return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
             });
         }
-
         //console.log(this.state.skel)
         return <div className="column-pairs">
         {board}
         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
         Score: {this.state.score}
+        </div>
+      }
+      
+      enterLobby() {
+        
+        return <div className="column">
+        <button class="button" onClick={() => this.channel.push("join")}>Join Game</button>
         </div>
       }
     }
