@@ -6,14 +6,12 @@ defmodule MemoryWeb.GamesChannel do
 
   def join("games:" <> game, payload, socket) do
     if authorized?(payload) do
-      # Add user to players
-      # If there are two players in the room, start the game
       socket = assign(socket, :game, game)
       view = GameServer.view(game, socket.assigns[:user])
-      username = socket.assigns[:user]
-
       {:ok, %{"join" => game, "game" => view}, socket}
+    else
       {:error, %{reason: "unauthorized"}}
+    end
   end
 
   # It is also common to receive messages from the client and

@@ -52,16 +52,20 @@ export default function game_init(root, channel) {
       }
 
       render() {
+          let board = null;
+          console.log(this.state.players.length)
         if (this.state.players.length < 2) {
             // go to lobby
+            return <h1>You been lobbied</h1>
         }
         else if (this.state.gameOver) {
             // show win sreen
+           return <p> you won </p>
         }
         else {
             // game is ongoing
             console.log(this.state.score)
-            let board = _.map(this.state.skel, (card, i) => {
+            board = _.map(this.state.skel, (card, i) => {
                 return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
             });
         }
