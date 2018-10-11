@@ -87,6 +87,7 @@ export default function game_init(root, channel) {
             // player to join the game
             waitingView = 
             <div className="column">
+            <h2> Username: {window.name}</h2>
             <h2> you been lobbied </h2>
             </div>
         }

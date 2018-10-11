@@ -13,7 +13,11 @@ defmodule Memory.State do
         # if not, add them to currentPlayers
         #currentPlayers = [Map.put_new(game.players, :user, default_player())]
         currentPlayers = []
-        Map.put(game, :players, currentPlayers)
+        if(Kernel.length(game.players) < 2) do
+        Map.put(game, :players, Map.put(..., user, default_player()))
+        else 
+            game
+        end
     end
 
     def default_player() do
