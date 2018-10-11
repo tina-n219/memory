@@ -4,20 +4,16 @@ defmodule Memory.State do
         %{
             board: gen_board(),
             score: 0,
-            players: []
+            players: %{}
         }
     end
 
     def joinGame(game, user) do
-        # if the user is in the game.players add to game, 
-        # else leave game unchanges, aka they observers
-        currentPlayers = game.players.values
-
-        if (Enum.member?(currentPlayers, user)) do
-        
-        end
-
-
+        # check if user is in the game
+        # if not, add them to currentPlayers
+        #currentPlayers = [Map.put_new(game.players, :user, default_player())]
+        currentPlayers = []
+        Map.put(game, :players, currentPlayers)
     end
 
     def default_player() do
@@ -46,6 +42,7 @@ defmodule Memory.State do
 
     def client_view(game, user) do 
         %{
+            players: game.players,
             skel: game.board, 
             score: 0
         }

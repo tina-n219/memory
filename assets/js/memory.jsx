@@ -53,23 +53,24 @@ export default function game_init(root, channel) {
 
       render() {
           let board = null;
-          console.log(this.state.players.length)
+          console.log(this.state.players);
+
+        // Are there more than 2 players in the game?
         if (this.state.players.length < 2) {
-            // go to lobby
+            // there are not, so go to lobby
             return this.enterLobby();
         }
         else if (this.state.gameOver) {
-            // show win sreen
            return <p> you won </p>
         }
         else {
-            // game is ongoing
+            // there are two players, you can now join
+            // as an observer
             console.log(this.state.score)
             board = _.map(this.state.skel, (card, i) => {
                 return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)}/>;
             });
         }
-        //console.log(this.state.skel)
         return <div className="column-pairs">
         {board}
         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
@@ -77,18 +78,26 @@ export default function game_init(root, channel) {
         </div>
       }
       
-      enterLobby() {
+      enterLobby() {  
+        // Has a player joined already?
+        let waitingView = <p>test</p>;
         if (this.state.players.length == 1) {
-            return <div className="column">
+            console.log("Only one player")
+            // As a single player, you need to wait for another
+            // player to join the game
+            waitingView = 
+            <div className="column">
             <h2> you been lobbied </h2>
-            <h2> chill, we are waiting for one more player </h2>
             </div>
         }
-        else {
-           return <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
-        }
-       
-      }
+        return (
+        <div className="row">
+        {waitingView}
+        
+        <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
+        </div>
+        )  
+    }
     }
 
     function Card(props) {
