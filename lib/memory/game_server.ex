@@ -17,12 +17,11 @@ defmodule Memory.GameServer do
   end
 
   def join_game(game, user) do
-    IO.puts"Gen Server joining game"
     GenServer.call(__MODULE__, {:joinGame, game, user})
   end
 
   def guess(game, user, cardIndex) do
-
+    IO.puts"Gen Server is guessing"
     GenServer.call(__MODULE__, {:guess, game, user, cardIndex})
   end
   

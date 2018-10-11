@@ -40,12 +40,14 @@ class Board extends React.Component {
     }
 
     flipCard(cardID) {
-        // if (this.state.skel[cardID].selected || this.state.skel[cardID].matched) {
-        //     return;
-        // }
-        // else {
-        //     this.channel.push("selectCard", { index: cardID });
-        // }
+        if (this.state.skel[cardID].selected || this.state.skel[cardID].matched) {
+            return;
+        }
+        else {
+            this.channel.push("selectCard", { index: cardID })
+        // Not sure about this 
+        // .receive("ok", this.gotView.bind(this));
+        }
     }
 
     restart() {
@@ -93,9 +95,6 @@ class Board extends React.Component {
 
     enterLobby() {
         // Has a player joined already?
-        let waitingView = <p>test</p>;
-        let allPlayers = this.state.players;
-
         if (this.state.players.length == null) {
             // As a single player, you need to wait for another
             // player to join the game
@@ -107,7 +106,6 @@ class Board extends React.Component {
         }
         return (
             <div className="row">
-                {waitingView}
                 <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
             </div>
         )

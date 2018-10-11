@@ -13,7 +13,7 @@ defmodule Memory.State do
         # if there is, add them to this game's players
         currentPlayers = length(game.players) 
         IO.puts"joinGame"  
-        if (Enum.member?(game.players, user) == false and currentPlayers < 2) do
+        if (Enum.member?(game.players, default_player(user)) == false and currentPlayers < 2) do
             newPlayers = (game.players ++ [default_player(user)])
             IO.inspect(newPlayers)
             IO.puts"Where them players at"
@@ -57,7 +57,7 @@ defmodule Memory.State do
     def client_view(game, user) do 
         %{
             skel: game.board, 
-            score: 0,
+            score: game.score,
             players: game.players
         }
 
@@ -73,35 +73,36 @@ defmodule Memory.State do
     #     end 
     # end n
 
-    def guess(game, cardIndex) do
+    def guess(game, user, cardIndex) do
         
-        updateBoard = game.board;
-        updatedScore = game.score + 1;
-        Map.put(game, :score, updatedScore);
+        updateBoard = game.board
+        updatedScore = game.score + 1
+        IO.puts"uh"
+        Map.put(game, :score, updatedScore)
 
-        cardSelected = Enum.at(updateBoard, cardIndex);
+        # cardSelected = Enum.at(updateBoard, cardIndex);
 
-        selected = Enum.filter(game.board, fn card ->
-            card.selected == true
-        end)
+        # selected = Enum.filter(game.board, fn card ->
+        #     card.selected == true
+        # end)
 
-        # Here I am just trying to get this function to flip a card
-        # before I get the rest of the logic to work
-        # I am just trying to get some response from my front end
-        if (length(selected) < 2) do 
-            newBoard = Enum.map(updateBoard, fn (card) ->
-                if(card.cardID == cardIndex) do
-                   %{card | selected: true}
-                else 
-                    card
-                end
-            end)
-            Map.put(game, :board, newBoard)
-        end
+        # # Here I am just trying to get this function to flip a card
+        # # before I get the rest of the logic to work
+        # # I am just trying to get some response from my front end
+        # if (length(selected) < 2) do 
+        #     newBoard = Enum.map(updateBoard, fn (card) ->
+        #         if(card.cardID == cardIndex) do
+        #            %{card | selected: true}
+        #         else 
+        #             card
+        #         end
+        #     end)
+        #     Map.put(game, :board, newBoard)
+        # end
 
-        if (length(selected) == 2) do
+        # if (length(selected) == 2) do
             
-        end
+        # end
     end
 
 end
