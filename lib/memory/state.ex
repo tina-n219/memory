@@ -83,13 +83,15 @@ defmodule Memory.State do
 
     def guess(game, user, cardIndex) do
 
-
-        updateBoard = game.board
-        updatedScore = game.score + 1
-        Map.put(game, :score, updatedScore)
-
-
-
+        # Is the user trying to click not the last player?
+        if (user == game.lastPlayer) do
+            game
+        else
+            updateBoard = game.board
+            updatedScore = game.score + 1
+            newScore = Map.put(game, :score, updatedScore)
+            Map.put(newScore, :lastPlayer, user)
+        end
         # cardSelected = Enum.at(updateBoard, cardIndex);
 
         # selected = Enum.filter(game.board, fn card ->
