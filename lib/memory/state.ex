@@ -115,7 +115,7 @@ defmodule Memory.State do
         end)
         newBoard = Map.put(game, :board, oneFlipBoard)
 
-        selectedCards = Enum.filter(newBoard.board, fn(card) -> card.selected == true end)
+        selectedCards = Enum.filter(newBoard.board, fn(card) -> card.selected == true and card.matched != true end)
         numSelected = length(selectedCards)
         
         # Check if it's first or second card being selected
@@ -147,12 +147,15 @@ defmodule Memory.State do
         updatedScore = Map.put(newLastPlayer, :players, newPlayers)
 
         # match cards
-        selectedCards = Enum.filter(updatedScore.board, fn(card) -> card.selected == true end)
+        selectedCards = Enum.filter(updatedScore.board, fn(card) -> card.selected == true and card.matched != true end)
+        
         cardOne = Enum.at(selectedCards, 0)
         cardTwo = Enum.at(selectedCards, 1)
+        IO.inspect(cardOne)
+        IO.inspect(cardTwo)
         matchCardOne = Enum.map(updatedScore.board, fn (card) -> 
             if(card.value == cardOne.value) do 
-                %{card | selected: false, matched: true}
+                %{card | matched: true, selected: false}
             else 
                 card
             end
@@ -161,11 +164,12 @@ defmodule Memory.State do
 
         matchCardTwo = Enum.map(matchBoard.board, fn (card) -> 
             if(card.value == cardTwo.value) do
-                    %{card | selected: false, matched: true}
+                    %{card | matched: true, selected: false}
                 else 
                        card
                     end
                end)
+        IO.inspect(matchCardTwo)
         Map.put(matchBoard, :board, matchCardTwo)
     end
 
@@ -183,8 +187,7 @@ defmodule Memory.State do
             matchBoardLast = Map.put(game, :board, unselectCards)
             # change the turn 
             newLastUser = getNoneLast(matchBoardLast)
-            IO.puts"new last player"
-            IO.inspect(newLastUser)
+
             Map.put(matchBoardLast, :lastPlayer, newLastUser)
      end
 
