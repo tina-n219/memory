@@ -59,7 +59,7 @@ defmodule Memory.GameServer do
     game = Map.get(state, name)
     game = State.finish_unsuccessful(game)
     IO.puts"about to broadcast"
-    MemoryWeb.Endpoint.broadcast!("game:#{name}", "update", State.client_view(game, name))
+    MemoryWeb.Endpoint.broadcast!("games:#{name}", "update", State.client_view(game, name))
     {:noreply, Map.put(state, name, game)}
   end
 end
