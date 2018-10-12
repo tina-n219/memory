@@ -35,13 +35,6 @@ defmodule MemoryWeb.GamesChannel do
     {:noreply, socket}
   end
 
-  # def handle_in("restart", payload, socket) do
-  #   game = State.new()
-  #   socket = assign(socket, :game, game)
-  #   BackupAgent.put(socket.assigns[:name], game)
-  #   {:reply, {:ok, %{"game" => State.client_view(game)}}, socket}
-  # end
-
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

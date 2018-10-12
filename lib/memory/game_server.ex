@@ -58,13 +58,8 @@ defmodule Memory.GameServer do
   def handle_info({:finish_unsuccessful, name}, state) do
     game = Map.get(state, name)
     game = State.finish_unsuccessful(game)
+    IO.puts"about to broadcast"
     MemoryWeb.Endpoint.broadcast!("game:#{name}", "update", State.client_view(game, name))
     {:noreply, Map.put(state, name, game)}
-  end
-
-  def handle_call({:reset, game, user}, _from, state) do
-   # gg = Map.get(state, game, State.new)
-    gg = State.new();
-    {:reply, State.client_view(gg, user), Map.put(state, game, gg)}
   end
 end

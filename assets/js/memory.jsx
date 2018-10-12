@@ -16,7 +16,7 @@ class Board extends React.Component {
             clickCount: 0,
             players: [],
             lastPlayer: null,
-            gameOver: false
+            gameOver: true
         };
         this.channel.join()
             .receive("ok", this.gotView.bind(this))
@@ -44,16 +44,17 @@ class Board extends React.Component {
         }
     }
 
-    restart() {
-        this.channel.push("restart");
-    }
-
     render() {
         // Are there more than 2 players in the game?
         console.log(this.state.players.length);
         let gameBoard = null;
         if (this.gameOver()) {
-            return <h1>you just coded for 15 + hrs to get this to appear</h1>
+            return (
+            <div className="column">
+            <h1>you just coded for 15 + hrs to get this to appear</h1>
+            {/* <h2>The score was: {this.state.players[0].score} to {this.state.players[1].score}</h2> */}
+            <button onClick={this.restartGame.bind(this)}>Restart</button>
+            </div>);
         }
         else if (this.state.players.length < 2) {
             // there are not, so go to lobby
@@ -67,14 +68,13 @@ class Board extends React.Component {
             gameBoard = _.map(this.state.skel, (card, i) => {
                 return <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)} />;
             });
-        return (<div className="column-pairs">
-        {gameBoard}
-        <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
+            return (<div className="column-pairs">
+                {gameBoard}
         
-        Click count: {this.state.clickCount} <br></br>
-        Score player 1: {this.state.players[0].score}  <br></br>
-        Score player 2: {this.state.players[1].score}
-        </div>);        
+                Click count: {this.state.clickCount} <br></br>
+                Score player 1: {this.state.players[0].score}  <br></br>
+                Score player 2: {this.state.players[1].score}
+            </div>);        
         }
     }
 
@@ -103,6 +103,13 @@ class Board extends React.Component {
         }
 
         return matchedCards.length == this.state.skel.length && this.state.gameOver;
+    }
+
+    restartGame() {
+        this.setState({
+            players:[],
+            gameOver: false
+        });
     }
 }
 

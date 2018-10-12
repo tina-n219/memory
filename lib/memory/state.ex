@@ -30,12 +30,6 @@ defmodule Memory.State do
         end
     end
 
-    # def gen_players() do
-    #     %{
-    #         :nattuck => "1"
-    #     }
-    # end
-
     def default_player(user) do
         player = %{
           username: user,
