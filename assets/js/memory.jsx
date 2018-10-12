@@ -15,6 +15,7 @@ class Board extends React.Component {
             skel: [],
             clickCount: 0,
             players: [],
+            lastPlayer: null,
             gameOver: false
         };
         this.channel.join()
@@ -69,27 +70,26 @@ class Board extends React.Component {
         return (<div className="column-pairs">
         {gameBoard}
         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
-        Click count: {this.state.clickCount}
-        </div>);        }
+        
+        Click count: {this.state.clickCount} <br></br>
+        Score player 1: {this.state.players[0].score}  <br></br>
+        Score player 2: {this.state.players[1].score}
+        </div>);        
+        }
     }
 
-    // enterGame() {
-    //     let gameBoard = _.map(this.state.skel, (card, i) => {
-    //         <Card key={i} value={card} buttoncall={this.flipCard.bind(this, i)} />;
-    //     });
-    //     return <div className="column-pairs">
-    //         {gameBoard}
-    //         <button className="button button-outline" onClick={this.restart.bind(this)}>Reset</button>
-    //         clickCount: {this.state.clickCount}
-    //     </div>
-    // }
-
     enterLobby() {
-       
+       let message = "";
+       if(this.state.players.length == 1) {
+           message = <p>Waiting for another player</p>
+       }
+       else {
+           message = <p>Waiting for players</p>
+       }
         return (
             <div className="column">
-                <h2> you been lobbied</h2> 
-                <p>waiting for another player</p>
+                <h2>you been lobbied</h2> 
+                {message}
                 <button class="button" onClick={() => this.channel.push("join_game")}>Join The Game !!</button>
             </div>
         )
@@ -97,7 +97,8 @@ class Board extends React.Component {
 
     gameOver() {
         let matchedCards = _.filter(this.state.skel, 'matched');
-        if( matchedCards.length == this.state.skel.length) {
+        if( matchedCards.length == this.state.skel.length && 
+            this.state.skel.length > 0) {
             this.state.gameOver = true;
         }
 

@@ -5,7 +5,8 @@ defmodule Memory.State do
             board: gen_board(),
             clickCount: 0,
             players: [],
-            lastPlayer: nil
+            lastPlayer: nil,
+            gameOver: false
         }
     end
 
